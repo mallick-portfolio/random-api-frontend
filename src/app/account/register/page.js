@@ -2,8 +2,12 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const Register = () => {
+  const router = useRouter();
   const initialValues = {
     first_name: "",
     last_name: "",
@@ -12,7 +16,7 @@ const Register = () => {
     password: "",
     password2: "",
     phone: "",
-    gender: "",
+    gender: "male",
   };
   const validationSchema = Yup.object().shape({
     first_name: Yup.string()
@@ -31,18 +35,42 @@ const Register = () => {
       .required("Password is required")
       .min(6, "Password is too short - should be 6 chars minimum"),
     password2: Yup.string()
-      .required("Confirm password is required")
+      .oneOf(
+        [Yup.ref("password"), null],
+        "Confirm password not match with password"
+      )
       .min(6, "Confirm password is too short - should be 6 chars minimum"),
   });
-  const onSubmit = (values, { reset }) => {
+  const onSubmit = async (values, { reset }) => {
     console.log(values);
+    const { data } = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/account/register/`,
+      values
+    );
+    if (data?.success) {
+      toast.success(data?.message, {
+        autoClose: 2000,
+        position: "bottom-right",
+      });
+      router.push("/account/login");
+    } else {
+      toast.error(data?.message, {
+        autoClose: 2000,
+        position: "bottom-right",
+      });
+    }
   };
 
   const formik = useFormik({ initialValues, onSubmit, validationSchema });
   const { errors, values, touched, handleSubmit, handleChange } = formik;
+
   return (
     <div className="flex justify-center items-center h-screen">
-      <form onSubmit={handleSubmit} className="">
+      <form
+        onSubmit={handleSubmit}
+        className="card w-[500px] bg-base-100 shadow-xl p-8"
+      >
+        <h1 className="text-2xl my-5 text-primary">Registration form</h1>
         <div className="grid grid-cols-2 gap-x-4 col-md-6">
           <div className="mb-2 max-w-[280px]">
             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -201,7 +229,6 @@ const Register = () => {
                   : "input-accent"
               } input input-bordered w-full max-w-xs`}
             >
-              <option>Select gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
               <option value="other">Other</option>
@@ -215,11 +242,8 @@ const Register = () => {
           </div>
         </div>
 
-        <button
-          type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          Register new account
+        <button type="submit" className="btn btn-secondary">
+          Register
         </button>
       </form>
     </div>
