@@ -3,9 +3,12 @@ import { useEffect } from "react";
 import { redirect } from "next/navigation";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/app/store/reducer/globalSlice";
 
 const isAuth = (Component) => {
   return function AuthComponent(props) {
+    const dispatch = useDispatch();
     useEffect(() => {
       if (
         Cookies.get("auth_token") == null ||
@@ -35,6 +38,8 @@ const isAuth = (Component) => {
 
         if (!data?.success || Cookies.get("auth_token") == undefined) {
           redirect("/");
+        } else {
+          dispatch(setUser(data?.data));
         }
       };
 

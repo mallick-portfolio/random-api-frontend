@@ -4,10 +4,12 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 const DashboardHeader = () => {
   const router = useRouter();
+  const { user } = useSelector((state) => state.global);
   const handleLogout = async () => {
     const { data } = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/account/logout/`,
@@ -56,18 +58,21 @@ const DashboardHeader = () => {
           </div>
         </div>
         <div className="navbar-center">
-          <a className="btn btn-ghost text-xl">Kume</a>
+          <Link href={"/"} className="text-xl">
+            Kume
+          </Link>
         </div>
         <div className="navbar-end">
-          <button className="btn btn-primary btn-sm mr-3">
-            <Link href={"/account/login"}>Login</Link>
-          </button>
-          <button
-            onClick={() => handleLogout()}
-            className="btn btn-secondary btn-sm"
-          >
-            Logout
-          </button>
+          {!user ? (
+            ""
+          ) : (
+            <button
+              onClick={() => handleLogout()}
+              className="btn btn-secondary btn-sm"
+            >
+              Logout
+            </button>
+          )}
         </div>
       </div>
     </div>

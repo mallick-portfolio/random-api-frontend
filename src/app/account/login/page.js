@@ -9,13 +9,14 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import { useUserLoginMutation } from "@/app/store/api/accountApi";
 import Loading from "@/app/components/shared/Loading";
+import { useSelector } from "react-redux";
 
 const Login = () => {
   const [handleLogin, { data, isLoading }] = useUserLoginMutation();
+  const { user } = useSelector((state) => state.global);
 
   useEffect(() => {
     if (data && data?.success) {
-      console.log(data);
       Cookies.set("auth_token", data?.token?.access);
       toast.success(data?.message, {
         autoClose: 2000,
@@ -23,7 +24,11 @@ const Login = () => {
       });
       redirect("/dashboard");
     }
+    if (data && !data?.success) {
+      toast.error(data?.message);
+    }
   }, [data]);
+
   const initialValues = {
     email: "",
     password: "",
@@ -42,6 +47,9 @@ const Login = () => {
 
   if (isLoading) {
     return <Loading />;
+  }
+  if (user?.id) {
+    redirect("/dashboard");
   }
 
   return (

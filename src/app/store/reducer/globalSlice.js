@@ -4,17 +4,17 @@ const globalSlice = createSlice({
   name: "global",
   initialState: {
     test: "",
-    isLoading: false,
+    user: {},
   },
   reducers: {
     setTest(state, action) {
       state.test = action.payload;
     },
-    setIsloading(state, action) {
-      state.isLoading = action.payload;
+    setUser(state, action) {
+      state.user = action.payload;
     },
   },
 });
 
-export const { setTest } = globalSlice.actions;
+export const { setTest , setUser} = globalSlice.actions;
 export default globalSlice.reducer;

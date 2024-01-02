@@ -1,17 +1,17 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import { toast } from "react-toastify";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import { useUserRegisterMutation } from "@/app/store/api/accountApi";
 import Loading from "@/app/components/shared/Loading";
+import { useSelector } from "react-redux";
 
 const Register = () => {
   const [handleRegister, { data, isLoading }] = useUserRegisterMutation();
-
+  const { user } = useSelector((state) => state.global);
   useEffect(() => {
     if (data && data?.success) {
       console.log(data);
@@ -66,8 +66,11 @@ const Register = () => {
   if (isLoading) {
     return <Loading />;
   }
+  if(user?.id){
+    redirect('/dashboard')
+  }
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center h-auto sm:h-screen">
       <form
         onSubmit={handleSubmit}
         className="card w-[500px] bg-base-100 shadow-xl p-8"
