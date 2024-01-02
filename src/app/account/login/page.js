@@ -1,14 +1,29 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import Link from "next/link";
+import { useUserLoginMutation } from "@/app/store/api/accountApi";
+import Loading from "@/app/components/shared/Loading";
 
 const Login = () => {
-  const router = useRouter();
+  const [handleLogin, { data, isLoading }] = useUserLoginMutation();
+
+  useEffect(() => {
+    if (data && data?.success) {
+      console.log(data);
+      Cookies.set("auth_token", data?.token?.access);
+      toast.success(data?.message, {
+        autoClose: 2000,
+        position: "bottom-right",
+      });
+      redirect("/dashboard");
+    }
+  }, [data]);
   const initialValues = {
     email: "",
     password: "",
@@ -19,27 +34,15 @@ const Login = () => {
     password: Yup.string().required("Password is required"),
   });
   const onSubmit = async (values) => {
-    const { data } = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/account/login/`,
-      values
-    );
-    if (data?.success) {
-      toast.success(data?.message, {
-        autoClose: 2000,
-        position: "bottom-right",
-      });
-      Cookies.set("auth_token", data?.token?.access);
-      router.push("/dashboard");
-    } else {
-      toast.error(data?.message, {
-        autoClose: 2000,
-        position: "bottom-right",
-      });
-    }
+    await handleLogin(values);
   };
 
   const formik = useFormik({ initialValues, onSubmit, validationSchema });
   const { errors, values, touched, handleSubmit, handleChange } = formik;
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex justify-center items-center h-screen">
@@ -95,6 +98,18 @@ const Login = () => {
         <button type="submit" className="btn  btn-secondary">
           Login
         </button>
+        <div className="flex items-center justify-center py-4 text-center bg-gray-50 dark:bg-gray-700">
+          <span className="text-sm text-gray-600 dark:text-gray-200">
+            Don't have an account{" "}
+          </span>
+
+          <Link
+            href="/account/register"
+            className="mx-2 text-sm font-bold text-primary hover:underline"
+          >
+            Register
+          </Link>
+        </div>
       </form>
     </div>
   );

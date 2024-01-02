@@ -6,10 +6,14 @@ import Cookies from "js-cookie";
 
 const isAuth = (Component) => {
   return function AuthComponent(props) {
-    if (Cookies.get("auth_token") == undefined) {
-      redirect("/");
-    }
     useEffect(() => {
+      if (
+        Cookies.get("auth_token") == null ||
+        Cookies.get("auth_token") == undefined
+      ) {
+        redirect("/");
+      }
+
       const handleRequest = async () => {
         try {
           const response = await axios.get(
@@ -28,9 +32,8 @@ const isAuth = (Component) => {
 
       const fetchData = async () => {
         const data = await handleRequest();
-        console.log(data);
 
-        if (!data?.success || Cookies.get("auth_token")) {
+        if (!data?.success || Cookies.get("auth_token") == undefined) {
           redirect("/");
         }
       };

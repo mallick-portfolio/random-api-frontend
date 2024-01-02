@@ -4,10 +4,25 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import Link from "next/link";
+import { useUserRegisterMutation } from "@/app/store/api/accountApi";
+import Loading from "@/app/components/shared/Loading";
 
 const Register = () => {
-  const router = useRouter();
+  const [handleRegister, { data, isLoading }] = useUserRegisterMutation();
+
+  useEffect(() => {
+    if (data && data?.success) {
+      console.log(data);
+      Cookies.set("auth_token", data?.token?.access);
+      toast.success(data?.message, {
+        autoClose: 2000,
+        position: "bottom-right",
+      });
+      redirect("/account/login");
+    }
+  }, [data]);
   const initialValues = {
     first_name: "",
     last_name: "",
@@ -41,29 +56,16 @@ const Register = () => {
       )
       .min(6, "Confirm password is too short - should be 6 chars minimum"),
   });
-  const onSubmit = async (values, { reset }) => {
-    console.log(values);
-    const { data } = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/account/register/`,
-      values
-    );
-    if (data?.success) {
-      toast.success(data?.message, {
-        autoClose: 2000,
-        position: "bottom-right",
-      });
-      router.push("/account/login");
-    } else {
-      toast.error(data?.message, {
-        autoClose: 2000,
-        position: "bottom-right",
-      });
-    }
+  const onSubmit = async (values) => {
+    await handleRegister(values);
   };
 
   const formik = useFormik({ initialValues, onSubmit, validationSchema });
   const { errors, values, touched, handleSubmit, handleChange } = formik;
 
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <div className="flex justify-center items-center h-screen">
       <form
@@ -245,6 +247,18 @@ const Register = () => {
         <button type="submit" className="btn btn-secondary">
           Register
         </button>
+        <div className="flex items-center justify-center py-4 text-center bg-gray-50 dark:bg-gray-700">
+          <span className="text-sm text-gray-600 dark:text-gray-200">
+            Already have an account{" "}
+          </span>
+
+          <Link
+            href="/account/login"
+            className="mx-2 text-sm font-bold text-primary hover:underline"
+          >
+            Login
+          </Link>
+        </div>
       </form>
     </div>
   );
