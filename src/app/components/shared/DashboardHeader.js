@@ -1,30 +1,37 @@
 "use client";
-import axios from "axios";
-import Cookies from "js-cookie";
+import { useUserLogoutMutation } from "@/app/store/api/accountApi";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import Loading from "./Loading";
+import Cookies from "js-cookie";
+import { redirect } from "next/navigation";
+import { setUser } from "@/app/store/reducer/globalSlice";
 
 const DashboardHeader = () => {
-  const router = useRouter();
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.global);
-  const handleLogout = async () => {
-    const { data } = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/account/logout/`,
-      {},
-      {
-        headers: { Authorization: `Bearer ${Cookies.get("auth_token")}` },
-      }
-    );
-    if (data?.success) {
-      toast.success(data?.message, { autoClose: 2000 });
-      Cookies.remove("auth_token");
-      router.push("/");
-    }
+  const [handleLogout, { data, isLoading }] = useUserLogoutMutation();
+
+  const logout = async () => {
+    console.log("i am calling");
+    await handleLogout();
   };
 
+  useEffect(() => {
+    if (data && data?.success) {
+      dispatch(setUser({}));
+      toast.success(data?.message);
+      Cookies.remove("auth_token");
+      redirect("/account/login");
+    } else {
+      toast.error(data?.message);
+    }
+  }, [data]);
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <div className="shadow-2xl  bg-base-200">
       <div className="navbar container">
@@ -67,7 +74,7 @@ const DashboardHeader = () => {
             ""
           ) : (
             <button
-              onClick={() => handleLogout()}
+              onClick={() => logout()}
               className="btn btn-secondary btn-sm"
             >
               Logout

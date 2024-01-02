@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const DashboardSidebar = () => {
@@ -84,9 +85,9 @@ const DashboardSidebar = () => {
               <span className="mx-4 font-medium">Accounts</span>
             </a>
 
-            <a
+            <Link
               className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
-              href="#"
+              href="/dashboard/board/"
             >
               <svg
                 className="w-5 h-5"
@@ -103,8 +104,8 @@ const DashboardSidebar = () => {
                 />
               </svg>
 
-              <span className="mx-4 font-medium">Tickets</span>
-            </a>
+              <span className="mx-4 font-medium">Board</span>
+            </Link>
 
             <a
               className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"

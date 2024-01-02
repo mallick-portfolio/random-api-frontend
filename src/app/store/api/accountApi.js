@@ -33,9 +33,23 @@ export const accountApi = createApi({
         body: data,
       }),
     }),
+    userLogout: builder.mutation({
+      query: () => ({
+        url: "/account/logout/",
+        method: "POST",
+        body: {},
+        headers: {
+          Authorization: `Bearer ${Cookies.get("auth_token")}`,
+        },
+      }),
+    }),
   }),
 });
 
 // Export the auto-generated hook for the `getPosts` query endpoint
-export const { useGetMeQuery, useUserLoginMutation, useUserRegisterMutation } =
-  accountApi;
+export const {
+  useGetMeQuery,
+  useUserLoginMutation,
+  useUserRegisterMutation,
+  useUserLogoutMutation,
+} = accountApi;
