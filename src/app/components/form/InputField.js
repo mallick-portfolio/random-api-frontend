@@ -27,8 +27,8 @@ const InputField = ({
         placeholder="example@gmail.com"
       />
       {errorName && errorTouched && (
-        <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-          <span class="font-medium">{errorName}</span>
+        <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+          <span className="font-medium">{errorName}</span>
         </p>
       )}
     </div>

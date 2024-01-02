@@ -18,8 +18,7 @@ const Login = () => {
 
     password: Yup.string().required("Password is required"),
   });
-  const onSubmit = async (values, { reset }) => {
-    console.log(values);
+  const onSubmit = async (values) => {
     const { data } = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/account/login/`,
       values
@@ -30,6 +29,7 @@ const Login = () => {
         position: "bottom-right",
       });
       Cookies.set("auth_token", data?.token?.access);
+      router.push("/dashboard");
     } else {
       toast.error(data?.message, {
         autoClose: 2000,
@@ -47,7 +47,7 @@ const Login = () => {
         onSubmit={handleSubmit}
         className="card w-[500px] bg-base-100 shadow-xl p-8"
       >
-        <h1 className="text-2xl my-5 text-primary">Registration form</h1>
+        <h1 className="text-2xl my-5 text-primary">Login form</h1>
         <div className="">
           <div className="mb-2">
             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
