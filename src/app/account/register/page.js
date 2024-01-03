@@ -1,9 +1,9 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useUserRegisterMutation } from "@/app/store/api/accountApi";
 import Loading from "@/app/components/shared/Loading";
@@ -11,7 +11,9 @@ import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
 
 const Register = () => {
+  const router = useRouter();
   const [handleRegister, { data, isLoading }] = useUserRegisterMutation();
+  const [email, setEmail] = useState("");
   const { user } = useSelector((state) => state.global);
   useEffect(() => {
     if (data && data?.success) {
@@ -21,7 +23,7 @@ const Register = () => {
         autoClose: 2000,
         position: "bottom-right",
       });
-      redirect("/account/login");
+      router.push(`/account/email-verify/?email=${email}`);
     }
   }, [data]);
   const initialValues = {
@@ -58,6 +60,7 @@ const Register = () => {
       .min(6, "Confirm password is too short - should be 6 chars minimum"),
   });
   const onSubmit = async (values) => {
+    setEmail(values.email);
     await handleRegister(values);
   };
 

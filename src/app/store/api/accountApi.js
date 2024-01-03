@@ -25,6 +25,14 @@ export const accountApi = createApi({
         body: logindata,
       }),
     }),
+    // verify email otp
+    verifyEmailOTP: builder.mutation({
+      query: (data) => ({
+        url: "/account/verify-email-otp/",
+        method: "POST",
+        body: data,
+      }),
+    }),
     // user login api
     userRegister: builder.mutation({
       query: (data) => ({
@@ -52,4 +60,5 @@ export const {
   useUserLoginMutation,
   useUserRegisterMutation,
   useUserLogoutMutation,
+  useVerifyEmailOTPMutation,
 } = accountApi;

@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import Column from "@/app/components/board/Column";
 import initialData from "@/lib/data";
+import isAuth from "@/lib/isAuth";
 const BoardDetails = () => {
   const params = useParams();
   const [starter, setStarter] = useState(initialData);
@@ -75,4 +76,4 @@ const BoardDetails = () => {
   );
 };
 
-export default BoardDetails;
+export default isAuth(BoardDetails);

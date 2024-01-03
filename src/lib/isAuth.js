@@ -5,10 +5,12 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/app/store/reducer/globalSlice";
+import { useSelector } from "react-redux";
 
 const isAuth = (Component) => {
   return function AuthComponent(props) {
     const dispatch = useDispatch();
+    const { user } = useSelector((state) => state.global);
     useEffect(() => {
       if (
         Cookies.get("auth_token") == null ||

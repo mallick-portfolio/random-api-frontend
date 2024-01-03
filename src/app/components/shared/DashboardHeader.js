@@ -15,7 +15,6 @@ const DashboardHeader = () => {
   const [handleLogout, { data, isLoading }] = useUserLogoutMutation();
 
   const logout = async () => {
-    console.log("i am calling");
     await handleLogout();
   };
 
