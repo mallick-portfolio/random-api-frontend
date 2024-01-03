@@ -16,5 +16,5 @@ const globalSlice = createSlice({
   },
 });
 
-export const { setTest , setUser} = globalSlice.actions;
+export const { setTest, setUser } = globalSlice.actions;
 export default globalSlice.reducer;

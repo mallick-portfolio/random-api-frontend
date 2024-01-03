@@ -2,7 +2,6 @@
 import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { redirect, useRouter } from "next/navigation";
 import Cookies from "js-cookie";

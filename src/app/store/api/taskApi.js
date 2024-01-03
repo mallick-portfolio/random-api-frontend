@@ -7,6 +7,7 @@ export const taskApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_API_URL}`,
   }),
+  tagTypes: ["task-item"],
   endpoints: (builder) => ({
     getBoardDetails: builder.query({
       query: (boardId) => ({
@@ -16,17 +17,36 @@ export const taskApi = createApi({
           Authorization: `Bearer ${Cookies.get("auth_token")}`,
         },
       }),
+      providesTags: ["task-item"],
     }),
-    // user login api
-    userLogin: builder.mutation({
-      query: (logindata) => ({
-        url: "/account/login/",
+    addColumn: builder.mutation({
+      query: (data) => ({
+        url: "/task-board/task-item/",
         method: "POST",
-        body: logindata,
+        body: data,
+        headers: {
+          Authorization: `Bearer ${Cookies.get("auth_token")}`,
+        },
       }),
+      invalidatesTags: ["task-item"],
+    }),
+    addTask: builder.mutation({
+      query: (data) => ({
+        url: "/task-board/task/",
+        method: "POST",
+        body: data,
+        headers: {
+          Authorization: `Bearer ${Cookies.get("auth_token")}`,
+        },
+      }),
+      invalidatesTags: ["task-item"],
     }),
   }),
 });
 
 // Export the auto-generated hook for the `getPosts` query endpoint
-export const { useGetBoardDetailsQuery } = taskApi;
+export const {
+  useGetBoardDetailsQuery,
+  useAddColumnMutation,
+  useAddTaskMutation,
+} = taskApi;

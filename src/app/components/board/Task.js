@@ -13,7 +13,7 @@ export default function Task({ task, index }) {
           isDragging={snapshot.isDragging}
         >
           <div className="flex gap-y-2 p-1 items-center">
-              <h4 className="text-lg">{task?.title}</h4>
+            <h4 className="text-lg">{task?.title}</h4>
           </div>
 
           <div className="flex justify-end p-2">
