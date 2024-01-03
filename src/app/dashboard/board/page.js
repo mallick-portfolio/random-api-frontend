@@ -21,7 +21,7 @@ const Board = () => {
         >
           {(provided, snapshot) => (
             <div
-              className="bg-[#639ee2] flex"
+              className="flex gap-3"
               isDraggingOver={snapshot.isDraggingOver}
               {...provided.droppableProps}
               ref={provided.innerRef}

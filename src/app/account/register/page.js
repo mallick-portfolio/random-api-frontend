@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useUserRegisterMutation } from "@/app/store/api/accountApi";
 import Loading from "@/app/components/shared/Loading";
 import { useSelector } from "react-redux";
+import Cookies from "js-cookie";
 
 const Register = () => {
   const [handleRegister, { data, isLoading }] = useUserRegisterMutation();
@@ -66,8 +67,8 @@ const Register = () => {
   if (isLoading) {
     return <Loading />;
   }
-  if(user?.id){
-    redirect('/dashboard')
+  if (user?.id && Cookies.get("auth_token")) {
+    redirect("/dashboard");
   }
   return (
     <div className="flex justify-center items-center h-auto sm:h-screen">

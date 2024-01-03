@@ -48,7 +48,7 @@ const Login = () => {
   if (isLoading) {
     return <Loading />;
   }
-  if (user?.id) {
+  if (user?.id && Cookies.get("auth_token")) {
     redirect("/dashboard");
   }
 
