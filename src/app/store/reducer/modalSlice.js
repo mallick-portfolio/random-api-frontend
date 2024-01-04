@@ -6,6 +6,8 @@ const modalSlice = createSlice({
     showAddColumnModal: false,
     showAddTaskModal: false,
     showAddBoardModal: false,
+    showDeleteBoardModal: false,
+    showDeleteTaskItemModal: false,
     selectedTaskItem: null,
   },
   reducers: {
@@ -21,6 +23,12 @@ const modalSlice = createSlice({
     setShowAddBoardModal(state, action) {
       state.showAddBoardModal = action.payload;
     },
+    setShowDeleteBoardModal(state, action) {
+      state.showDeleteBoardModal = action.payload;
+    },
+    setShowDeleteTaskItemModal(state, action) {
+      state.showDeleteTaskItemModal = action.payload;
+    },
   },
 });
 
@@ -29,5 +37,7 @@ export const {
   setShowAddTaskModal,
   setSelectedTaskItem,
   setShowAddBoardModal,
+  setShowDeleteBoardModal,
+  setShowDeleteTaskItemModal,
 } = modalSlice.actions;
 export default modalSlice.reducer;

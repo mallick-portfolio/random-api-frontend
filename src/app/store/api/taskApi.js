@@ -76,6 +76,30 @@ export const taskApi = createApi({
       },
       invalidatesTags: ["task-item"],
     }),
+    deleteBoard: builder.mutation({
+      query: (id) => {
+        return {
+          url: `/task-board/${id}/`,
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${Cookies.get("auth_token")}`,
+          },
+        };
+      },
+      invalidatesTags: ["board"],
+    }),
+    deleteTaskItem: builder.mutation({
+      query: (id) => {
+        return {
+          url: `/task-board/task-item/${id}/`,
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${Cookies.get("auth_token")}`,
+          },
+        };
+      },
+      invalidatesTags: ["task-item"],
+    }),
   }),
 });
 
@@ -87,4 +111,6 @@ export const {
   useGetAllBoardQuery,
   useAddBoardMutation,
   useMoveColumnMutation,
+  useDeleteBoardMutation,
+  useDeleteTaskItemMutation,
 } = taskApi;

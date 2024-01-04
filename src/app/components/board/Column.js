@@ -5,7 +5,9 @@ import { useDispatch } from "react-redux";
 import {
   setSelectedTaskItem,
   setShowAddTaskModal,
+  setShowDeleteTaskItemModal,
 } from "@/app/store/reducer/modalSlice";
+import { MdDelete } from "react-icons/md";
 
 const Column = ({ tasks, column, index }) => {
   const dispatch = useDispatch();
@@ -17,12 +19,26 @@ const Column = ({ tasks, column, index }) => {
     >
       {(provided) => (
         <div
-          className="rounded-md border border-dashed p-2  border-primary py-5 flex flex-col w-1/4 min-w-[250px] bg-[#ebe9e9] "
+          className="rounded-md border border-dashed p-2  border-primary flex flex-col w-1/4 min-w-[250px] bg-[#ebe9e9] "
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <h2 className="p-2 text-2xl">{column.title}</h2>
+          <div className="flex justify-between items-center">
+            <h2 className="p-2 text-2xl">{column.title}</h2>
+
+            <button
+              onClick={() => {
+                dispatch(setShowDeleteTaskItemModal(true));
+                dispatch(setSelectedTaskItem(column.id));
+              }}
+              className="p-1 rounded-full border border-red-500 ml-auto text-red-500 float-right font-semibold outline-none focus:outline-none"
+            >
+              <span className=" text-red-500  text-sm block outline-none focus:outline-none">
+                <MdDelete />
+              </span>
+            </button>
+          </div>
           <Droppable droppableId={`droppableId${column.id}`} type="task">
             {(provided, snapshot) => (
               <div
@@ -41,7 +57,7 @@ const Column = ({ tasks, column, index }) => {
                     dispatch(setShowAddTaskModal(true));
                     dispatch(setSelectedTaskItem(column.id));
                   }}
-                  className="rounded-md border p-2 border-primary flex  text-xl justify-center items-center bg-[#dddcdc] text-center cursor-pointer"
+                  className="rounded-md border btn btn-sm mt-4 border-primary flex  text-xl justify-center items-center bg-[#dddcdc] text-center cursor-pointer"
                 >
                   Add Task
                 </div>

@@ -5,17 +5,21 @@ import {
   useGetBoardDetailsQuery,
   useMoveColumnMutation,
 } from "@/app/store/api/taskApi";
-import Loading from "@/app/components/shared/Loading";
 import { toast } from "react-toastify";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import Column from "@/app/components/board/Column";
 import isAuth from "@/lib/isAuth";
 import AddColumnModal from "@/app/components/modal/AddColumnModal";
-import { setShowAddColumnModal } from "@/app/store/reducer/modalSlice";
+import {
+  setShowAddColumnModal,
+  setShowDeleteBoardModal,
+} from "@/app/store/reducer/modalSlice";
 import { useDispatch } from "react-redux";
 import AddTask from "@/app/components/modal/AddTask";
 import Link from "next/link";
 import { IoIosArrowDropdown } from "react-icons/io";
+import DeleteBoardModal from "@/app/components/modal/DeleteBoardModal";
+import DeleteTaskItemModal from "@/app/components/modal/DeleteTaskItemModal";
 
 const BoardDetails = () => {
   const dispatch = useDispatch();
@@ -67,7 +71,9 @@ const BoardDetails = () => {
               <Link href={"/dashboard/board"}>Back</Link>
             </li>
             <li className="text-error">
-              <a>Delete</a>
+              <button onClick={() => dispatch(setShowDeleteBoardModal(true))}>
+                Delete
+              </button>
             </li>
           </ul>
         </div>
@@ -113,6 +119,8 @@ const BoardDetails = () => {
       </div>
       <AddColumnModal />
       <AddTask />
+      <DeleteBoardModal />
+      <DeleteTaskItemModal />
     </div>
   );
 };
