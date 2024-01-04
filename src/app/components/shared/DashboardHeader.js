@@ -65,7 +65,7 @@ const DashboardHeader = () => {
         </div>
         <div className="navbar-center">
           <Link href={"/"} className="text-xl">
-            Kume
+            Kumle
           </Link>
         </div>
         <div className="navbar-end">

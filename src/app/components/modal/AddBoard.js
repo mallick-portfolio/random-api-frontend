@@ -1,32 +1,33 @@
-import { setShowAddColumnModal } from "@/app/store/reducer/modalSlice";
+import { setShowAddBoardModal } from "@/app/store/reducer/modalSlice";
 import useComponentVisible from "@/app/utils/useComponentVisible";
 import { useDispatch, useSelector } from "react-redux";
 import { HiMiniXMark } from "react-icons/hi2";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useAddColumnMutation } from "@/app/store/api/taskApi";
+import {
+  useAddBoardMutation,
+  useAddTaskMutation,
+} from "@/app/store/api/taskApi";
 import Loading from "../shared/Loading";
-import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
-const AddColumnModal = () => {
-  const params = useParams();
+const AddBoard = () => {
   const dispatch = useDispatch();
-  const { showAddColumnModal } = useSelector((state) => state.modal);
+  const router = useRouter();
+  const { showAddBoardModal } = useSelector((state) => state.modal);
 
-  const { ref } = useComponentVisible(
-    showAddColumnModal,
-    setShowAddColumnModal
-  );
+  const { ref } = useComponentVisible(showAddBoardModal, setShowAddBoardModal);
 
   // api call
-  const [handleAddColumn, { data, isLoading }] = useAddColumnMutation();
+  const [handlAddBoard, { data, isLoading }] = useAddBoardMutation();
 
   useEffect(() => {
     if (data && data.success) {
       toast.success(data.message);
-      dispatch(setShowAddColumnModal(false));
+      dispatch(setShowAddBoardModal(false));
+      router.push(`/dashboard/board/${data?.data?.id}`);
     } else if (data && data.error) {
       toast.error(data.message);
     }
@@ -36,11 +37,10 @@ const AddColumnModal = () => {
     title: "",
   };
   const validationSchema = Yup.object().shape({
-    title: Yup.string().required("Title is required"),
+    title: Yup.string().required("Board title is required"),
   });
   const onSubmit = async (data, { resetForm }) => {
-    data.board = params.id;
-    await handleAddColumn(data);
+    await handlAddBoard(data);
     resetForm();
   };
 
@@ -52,7 +52,7 @@ const AddColumnModal = () => {
   }
   return (
     <div>
-      {showAddColumnModal ? (
+      {showAddBoardModal ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <form
@@ -62,10 +62,10 @@ const AddColumnModal = () => {
             >
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                  <h3 className="text-3xl font-semibold">Add Column</h3>
+                  <h3 className="text-3xl font-semibold">Add Task</h3>
                   <button
                     className="p-1 rounded-full border border-red-500 ml-auto   text-red-500 float-right font-semibold outline-none focus:outline-none"
-                    onClick={() => dispatch(setShowAddColumnModal(false))}
+                    onClick={() => dispatch(setShowAddBoardModal(false))}
                   >
                     <span className=" text-red-500  text-2xl block outline-none focus:outline-none">
                       <HiMiniXMark />
@@ -76,7 +76,7 @@ const AddColumnModal = () => {
                 <div className="relative p-6 flex-auto">
                   <div className="mb-2">
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                      Enter the column title
+                      Enter the board title
                     </label>
                     <input
                       name="title"
@@ -101,7 +101,7 @@ const AddColumnModal = () => {
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={() => dispatch(setShowAddColumnModal(false))}
+                    onClick={() => dispatch(setShowAddBoardModal(false))}
                   >
                     Close
                   </button>
@@ -117,4 +117,4 @@ const AddColumnModal = () => {
   );
 };
 
-export default AddColumnModal;
+export default AddBoard;

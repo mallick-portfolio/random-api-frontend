@@ -8,7 +8,6 @@ import {
 } from "@/app/store/reducer/modalSlice";
 
 const Column = ({ tasks, column, index }) => {
-  console.log(column);
   const dispatch = useDispatch();
   return (
     <Draggable

@@ -1,7 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { useGetBoardDetailsQuery } from "@/app/store/api/taskApi";
+import {
+  useGetBoardDetailsQuery,
+  useMoveColumnMutation,
+} from "@/app/store/api/taskApi";
 import Loading from "@/app/components/shared/Loading";
 import { toast } from "react-toastify";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -11,31 +14,64 @@ import AddColumnModal from "@/app/components/modal/AddColumnModal";
 import { setShowAddColumnModal } from "@/app/store/reducer/modalSlice";
 import { useDispatch } from "react-redux";
 import AddTask from "@/app/components/modal/AddTask";
+import Link from "next/link";
+import { IoIosArrowDropdown } from "react-icons/io";
+
 const BoardDetails = () => {
   const dispatch = useDispatch();
+
   const params = useParams();
+  const [handleMoveColumn, { data: cData, isLoading: cIsLoading }] =
+    useMoveColumnMutation();
 
   const { data, isLoading, isError } = useGetBoardDetailsQuery(params.id);
-  useEffect(() => {
-    if (data && data.success) {
-      toast.success(data.message);
-    }
-  }, [data]);
-  const onDragEnd = (e) => {
-    console.log(e);
-  };
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  const onDragEnd = async (e) => {
+    const { source, destination, type, draggableId } = e;
+    if (!destination) return;
+    if (type == "column") {
+      const numericPart = draggableId.match(/\d+/);
+      const id = parseInt(numericPart[0], 10);
+      const data = {
+        position: destination?.index + 1,
+        board: params.id,
+      };
+      if (id != undefined) {
+        await handleMoveColumn({ data, id });
+        return;
+      }
+    }
+  };
+  // if (isLoading || cIsLoading) {
+  //   return <Loading />;
+  // }
   if (isError && !isLoading) {
     toast.error("Board id not found. Invalid board id");
   }
+
   return (
     <div>
-      <h1 className=" p-2 border-primary py-5 flex text-2xl justify-center items-center  text-center">
-        Task board
-      </h1>
+      <div className="flex justify-between items-center">
+        <h1 className=" p-2 border-primary py-5 flex text-2xl justify-center items-center  text-center">
+          {data?.data?.board?.title}
+        </h1>
+        <div className="dropdown dropdown-end">
+          <div tabIndex={0} role="button" className="btn btn-sm m-1">
+            <IoIosArrowDropdown className="text-xl" />
+          </div>
+          <ul
+            tabIndex={0}
+            className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-44"
+          >
+            <li>
+              <Link href={"/dashboard/board"}>Back</Link>
+            </li>
+            <li className="text-error">
+              <a>Delete</a>
+            </li>
+          </ul>
+        </div>
+      </div>
       <div className="overflow-auto min-h-[calc(100vh-6.5rem)] p-4 rounded-md">
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable

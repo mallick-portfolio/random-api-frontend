@@ -7,8 +7,18 @@ export const taskApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_API_URL}`,
   }),
-  tagTypes: ["task-item"],
+  tagTypes: ["task-item", "board"],
   endpoints: (builder) => ({
+    getAllBoard: builder.query({
+      query: (boardId) => ({
+        url: `/task-board/`,
+        method: "get",
+        headers: {
+          Authorization: `Bearer ${Cookies.get("auth_token")}`,
+        },
+      }),
+      providesTags: ["board"],
+    }),
     getBoardDetails: builder.query({
       query: (boardId) => ({
         url: `/task-board/${boardId}`,
@@ -41,6 +51,31 @@ export const taskApi = createApi({
       }),
       invalidatesTags: ["task-item"],
     }),
+    addBoard: builder.mutation({
+      query: (data) => ({
+        url: "/task-board/",
+        method: "POST",
+        body: data,
+        headers: {
+          Authorization: `Bearer ${Cookies.get("auth_token")}`,
+        },
+      }),
+      invalidatesTags: ["board"],
+    }),
+    moveColumn: builder.mutation({
+      query: ({ data, id }) => {
+        console.log(id, data);
+        return {
+          url: `/task-board/task-item/${id}/`,
+          method: "PUT",
+          body: data,
+          headers: {
+            Authorization: `Bearer ${Cookies.get("auth_token")}`,
+          },
+        };
+      },
+      invalidatesTags: ["task-item"],
+    }),
   }),
 });
 
@@ -49,4 +84,7 @@ export const {
   useGetBoardDetailsQuery,
   useAddColumnMutation,
   useAddTaskMutation,
+  useGetAllBoardQuery,
+  useAddBoardMutation,
+  useMoveColumnMutation,
 } = taskApi;
