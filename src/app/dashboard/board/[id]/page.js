@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import {
   useGetBoardDetailsQuery,
   useMoveColumnMutation,
+  useMoveTaskMutation,
 } from "@/app/store/api/taskApi";
 import { toast } from "react-toastify";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -27,11 +28,14 @@ const BoardDetails = () => {
   const params = useParams();
   const [handleMoveColumn, { data: cData, isLoading: cIsLoading }] =
     useMoveColumnMutation();
+  const [handleMoveTask, { data: tData, isLoading: tIsLoading }] =
+    useMoveTaskMutation();
 
   const { data, isLoading, isError } = useGetBoardDetailsQuery(params.id);
 
   const onDragEnd = async (e) => {
     const { source, destination, type, draggableId } = e;
+
     if (!destination) return;
     if (type == "column") {
       const numericPart = draggableId.match(/\d+/);
@@ -44,6 +48,16 @@ const BoardDetails = () => {
         await handleMoveColumn({ data, id });
         return;
       }
+    } else if (type == "task") {
+      const numericPart = destination?.droppableId?.match(/\d+/);
+      const task_item = parseInt(numericPart[0], 10);
+      const id = draggableId;
+      const new_position = destination?.index + 1;
+      const data = {
+        new_position,
+        task_item,
+      };
+      await handleMoveTask({ data, id });
     }
   };
   // if (isLoading || cIsLoading) {

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 
 const isAuth = (Component) => {
   return function AuthComponent(props) {
+    const router = useRouter();
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.global);
     useEffect(() => {
@@ -16,7 +17,7 @@ const isAuth = (Component) => {
         Cookies.get("auth_token") == null ||
         Cookies.get("auth_token") == undefined
       ) {
-        redirect("/");
+        router.push("/");
       }
 
       const handleRequest = async () => {
@@ -37,11 +38,18 @@ const isAuth = (Component) => {
 
       const fetchData = async () => {
         const data = await handleRequest();
+        console.log(data);
 
-        if (!data?.success || Cookies.get("auth_token") == undefined) {
-          redirect("/");
-        } else {
+        if (
+          (data && !data?.success) ||
+          Cookies.get("auth_token") == undefined
+        ) {
+          router.push("/");
+        } else if (data && data?.success) {
           dispatch(setUser(data?.data));
+        } else {
+          dispatch(setUser({}));
+          router.push("/account/login");
         }
       };
 

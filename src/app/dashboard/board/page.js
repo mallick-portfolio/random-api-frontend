@@ -38,7 +38,7 @@ const Board = () => {
           Add board
         </button>
       </div>
-      <div>
+      <div className="flex justify-center flex-col items-center">
         <h1 className=" p-2 border-primary py-5 flex text-2xl justify-start items-center  text-center">
           List of your board
         </h1>

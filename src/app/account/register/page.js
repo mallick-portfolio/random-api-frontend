@@ -17,13 +17,14 @@ const Register = () => {
   const { user } = useSelector((state) => state.global);
   useEffect(() => {
     if (data && data?.success) {
-      console.log(data);
       Cookies.set("auth_token", data?.token?.access);
       toast.success(data?.message, {
         autoClose: 2000,
         position: "bottom-right",
       });
       router.push(`/account/email-verify/?email=${email}`);
+    } else if (data && data?.error && !data?.success) {
+      toast.error(data?.message);
     }
   }, [data]);
   const initialValues = {

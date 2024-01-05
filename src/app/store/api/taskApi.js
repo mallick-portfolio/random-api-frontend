@@ -76,6 +76,19 @@ export const taskApi = createApi({
       },
       invalidatesTags: ["task-item"],
     }),
+    moveTask: builder.mutation({
+      query: ({ data, id }) => {
+        return {
+          url: `/task-board/task/${id}/`,
+          method: "PATCH",
+          body: data,
+          headers: {
+            Authorization: `Bearer ${Cookies.get("auth_token")}`,
+          },
+        };
+      },
+      invalidatesTags: ["task-item"],
+    }),
     deleteBoard: builder.mutation({
       query: (id) => {
         return {
@@ -113,4 +126,5 @@ export const {
   useMoveColumnMutation,
   useDeleteBoardMutation,
   useDeleteTaskItemMutation,
+  useMoveTaskMutation,
 } = taskApi;

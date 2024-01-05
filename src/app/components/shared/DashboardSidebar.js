@@ -1,7 +1,9 @@
 import Link from "next/link";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const DashboardSidebar = () => {
+  const { user } = useSelector((state) => state.global);
   return (
     <div className="drawer-side">
       <label
@@ -10,13 +12,9 @@ const DashboardSidebar = () => {
         className="drawer-overlay"
       ></label>
       <aside className="flex flex-col w-64 h-screen px-4 py-8 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
-        <a href="#" className="mx-auto">
-          <img
-            className="w-auto h-6 sm:h-7"
-            src="https://merakiui.com/images/full-logo.svg"
-            alt=""
-          />
-        </a>
+        <Link href={"/"} className="text-xl m-auto">
+          Kumle
+        </Link>
 
         <div className="flex flex-col items-center mt-6 -mx-2">
           <img
@@ -25,18 +23,18 @@ const DashboardSidebar = () => {
             alt="avatar"
           />
           <h4 className="mx-2 mt-2 font-medium text-gray-800 dark:text-gray-200">
-            John Doe
+            {user?.first_name} {user?.last_name}
           </h4>
           <p className="mx-2 mt-1 text-sm font-medium text-gray-600 dark:text-gray-400">
-            john@example.com
+            {user?.email}
           </p>
         </div>
 
         <div className="flex flex-col justify-between flex-1 mt-6">
           <nav>
-            <a
+            <Link
               className="flex items-center px-4 py-2 text-gray-700 bg-gray-100 rounded-lg dark:bg-gray-800 dark:text-gray-200"
-              href="#"
+              href="/dashboard"
             >
               <svg
                 className="w-5 h-5"
@@ -54,7 +52,7 @@ const DashboardSidebar = () => {
               </svg>
 
               <span className="mx-4 font-medium">Dashboard</span>
-            </a>
+            </Link>
 
             <a
               className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
