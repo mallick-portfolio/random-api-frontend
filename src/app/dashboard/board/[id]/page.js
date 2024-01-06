@@ -21,6 +21,8 @@ import Link from "next/link";
 import { IoIosArrowDropdown } from "react-icons/io";
 import DeleteBoardModal from "@/app/components/modal/DeleteBoardModal";
 import DeleteTaskItemModal from "@/app/components/modal/DeleteTaskItemModal";
+import TaskDetails from "@/app/components/modal/TaskDetails";
+import Widget from "@/app/components/widget/Widget";
 
 const BoardDetails = () => {
   const dispatch = useDispatch();
@@ -131,10 +133,12 @@ const BoardDetails = () => {
           </Droppable>
         </DragDropContext>
       </div>
+      <Widget />
       <AddColumnModal />
       <AddTask />
       <DeleteBoardModal />
       <DeleteTaskItemModal />
+      <TaskDetails />
     </div>
   );
 };

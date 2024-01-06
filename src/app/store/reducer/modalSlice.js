@@ -3,14 +3,20 @@ import { createSlice } from "@reduxjs/toolkit";
 const modalSlice = createSlice({
   name: "modal",
   initialState: {
+    showChatBox: false,
     showAddColumnModal: false,
     showAddTaskModal: false,
     showAddBoardModal: false,
     showDeleteBoardModal: false,
     showDeleteTaskItemModal: false,
+    showTaskDetailModal: false,
     selectedTaskItem: null,
+    taskDetails: null,
   },
   reducers: {
+    setShowChatBox(state, action) {
+      state.showChatBox = action.payload;
+    },
     setShowAddColumnModal(state, action) {
       state.showAddColumnModal = action.payload;
     },
@@ -29,6 +35,12 @@ const modalSlice = createSlice({
     setShowDeleteTaskItemModal(state, action) {
       state.showDeleteTaskItemModal = action.payload;
     },
+    setShowTaskDetailModal(state, action) {
+      state.showTaskDetailModal = action.payload;
+    },
+    setTaskDetails(state, action) {
+      state.taskDetails = action.payload;
+    },
   },
 });
 
@@ -39,5 +51,8 @@ export const {
   setShowAddBoardModal,
   setShowDeleteBoardModal,
   setShowDeleteTaskItemModal,
+  setTaskDetails,
+  setShowTaskDetailModal,
+  setShowChatBox,
 } = modalSlice.actions;
 export default modalSlice.reducer;

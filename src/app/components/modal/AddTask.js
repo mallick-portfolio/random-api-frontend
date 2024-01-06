@@ -31,9 +31,11 @@ const AddTask = () => {
 
   const initialValues = {
     title: "",
+    description: "",
   };
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Title is required"),
+    description: Yup.string().required("Description is required"),
   });
   const onSubmit = async (data, { resetForm }) => {
     data.task_item = selectedTaskItem;
@@ -89,6 +91,25 @@ const AddTask = () => {
                     {errors.title && touched.title && (
                       <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                         <span className="font-medium">{errors.title}</span>
+                      </p>
+                    )}
+                  </div>
+                  <div className="mt-2">
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      Enter the task description
+                    </label>
+                    <textarea
+                      name="description"
+                      onChange={handleChange}
+                      value={values.description}
+                      placeholder="Task description"
+                      className={`textarea textarea-bordered textarea-xs min-h-24 w-full max-w-xs`}
+                    ></textarea>
+                    {errors.description && touched.description && (
+                      <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                        <span className="font-medium">
+                          {errors.description}
+                        </span>
                       </p>
                     )}
                   </div>

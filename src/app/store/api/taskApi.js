@@ -29,6 +29,19 @@ export const taskApi = createApi({
       }),
       providesTags: ["task-item"],
     }),
+    getTaskDetails: builder.query({
+      query: (task_id) => {
+        // if (task_id == null) return;
+        return {
+          url: `/task-board/task/${task_id}`,
+          method: "get",
+          headers: {
+            Authorization: `Bearer ${Cookies.get("auth_token")}`,
+          },
+        };
+      },
+      providesTags: ["task-item"],
+    }),
     addColumn: builder.mutation({
       query: (data) => ({
         url: "/task-board/task-item/",
@@ -127,4 +140,5 @@ export const {
   useDeleteBoardMutation,
   useDeleteTaskItemMutation,
   useMoveTaskMutation,
+  useLazyGetTaskDetailsQuery,
 } = taskApi;
