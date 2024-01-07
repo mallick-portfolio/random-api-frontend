@@ -27,7 +27,7 @@ const AddBoard = () => {
     if (data && data.success) {
       toast.success(data.message);
       dispatch(setShowAddBoardModal(false));
-      router.push(`/dashboard/board/${data?.data?.id}`);
+      router.push(`/dashboard/board/${data?.data?.unique_id}`);
     } else if (data && data.error) {
       toast.error(data.message);
     }

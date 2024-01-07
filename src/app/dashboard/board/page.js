@@ -5,6 +5,7 @@ import Loading from "@/app/components/shared/Loading";
 import { useGetAllBoardQuery } from "@/app/store/api/taskApi";
 import { setShowAddBoardModal } from "@/app/store/reducer/modalSlice";
 import initialData from "@/lib/data";
+import isAuth from "@/lib/isAuth";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -44,8 +45,10 @@ const Board = () => {
         </h1>
         <ul className="menu bg-base-200 w-56 rounded-box">
           {data?.data?.map((board) => (
-            <li key={board?.id}>
-              <Link href={`/dashboard/board/${board?.id}`}>{board?.title}</Link>
+            <li key={board?.unique_id}>
+              <Link href={`/dashboard/board/${board?.unique_id}`}>
+                {board?.title}
+              </Link>
             </li>
           ))}
         </ul>
@@ -55,4 +58,4 @@ const Board = () => {
   );
 };
 
-export default Board;
+export default isAuth(Board);

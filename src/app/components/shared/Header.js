@@ -42,10 +42,10 @@ const Header = () => {
         <a className="btn btn-ghost text-xl">Kumle</a>
       </div>
       <div className="navbar-end">
-        <button className="btn btn-primary btn-sm">
+        <button className="btn bg-first btn-sm">
           <Link href={"/account/register"}>Register</Link>
         </button>
-        <button className="btn btn-secondary btn-sm ml-2">
+        <button className="btn bg-second btn-sm ml-2">
           <Link href={"/account/login"}>Login</Link>
         </button>
       </div>

@@ -1,12 +1,37 @@
 import { setShowChatBox } from "@/app/store/reducer/modalSlice";
-import React from "react";
+import { useParams } from "next/navigation";
+import React, { useCallback, useState } from "react";
 import { HiMiniXMark } from "react-icons/hi2";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import useWebSocket, { ReadyState } from "react-use-websocket";
 
 const Widget = () => {
   const dispatch = useDispatch();
   const { showChatBox } = useSelector((state) => state.modal);
+  const { id } = useParams();
+  const [socketUrl, setSocketUrl] = useState(
+    `ws://localhost:8000/ws/message/${id}/`
+  );
+  const [messageHistory, setMessageHistory] = useState([]);
+
+  const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+  console.log(lastMessage?.data);
+
+  const handleClickSendMessage = useCallback((data) => {
+    console.log(data);
+    sendMessage("Hello");
+  }, []);
+
+  const connectionStatus = {
+    [ReadyState.CONNECTING]: "Connecting",
+    [ReadyState.OPEN]: "Open",
+    [ReadyState.CLOSING]: "Closing",
+    [ReadyState.CLOSED]: "Closed",
+    [ReadyState.UNINSTANTIATED]: "Uninstantiated",
+  }[readyState];
+
+  console.log(connectionStatus);
   return (
     <div className="">
       <div
@@ -153,12 +178,15 @@ const Widget = () => {
               <div className="relative w-full">
                 <input
                   type="text"
-                  className="flex w-full border rounded-xl text-red-600 focus:outline-none focus:border-indigo-300 pl-4 h-10"
+                  className="flex w-full border rounded-xl text-primary focus:outline-none focus:border-indigo-300 pl-4 h-10"
                 />
               </div>
             </div>
             <div className="">
-              <button className="flex items-center justify-center text-white">
+              <button
+                onClick={() => handleClickSendMessage()}
+                className="flex items-center justify-center text-white"
+              >
                 <span className="">
                   <svg
                     className="w-5 h-5 transform rotate-45 -mt-px"

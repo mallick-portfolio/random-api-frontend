@@ -38,7 +38,6 @@ const isAuth = (Component) => {
 
       const fetchData = async () => {
         const data = await handleRequest();
-        console.log(data);
 
         if (
           (data && !data?.success) ||
