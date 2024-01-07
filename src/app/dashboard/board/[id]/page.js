@@ -14,6 +14,7 @@ import AddColumnModal from "@/app/components/modal/AddColumnModal";
 import {
   setShowAddColumnModal,
   setShowDeleteBoardModal,
+  setShowInviteBoardModal,
 } from "@/app/store/reducer/modalSlice";
 import { useDispatch } from "react-redux";
 import AddTask from "@/app/components/modal/AddTask";
@@ -25,10 +26,20 @@ import TaskDetails from "@/app/components/modal/TaskDetails";
 import Widget from "@/app/components/widget/Widget";
 import { useSelector } from "react-redux";
 import WidgetToggler from "@/app/components/widget/WidgetToggler";
+import InviteIntoBoard from "@/app/components/modal/InviteIntoBoard";
+import { setMessages } from "@/app/store/reducer/dataSlice";
 
 const BoardDetails = () => {
   const dispatch = useDispatch();
-  const { showChatBox } = useSelector((state) => state.modal);
+  const {
+    showChatBox,
+    showAddColumnModal,
+    showAddTaskModal,
+    showDeleteBoardModal,
+    showDeleteTaskItemModal,
+    showTaskDetailModal,
+    showInviteBoardModal,
+  } = useSelector((state) => state.modal);
 
   const params = useParams();
   const [handleMoveColumn, { data: cData, isLoading: cIsLoading }] =
@@ -37,6 +48,12 @@ const BoardDetails = () => {
     useMoveTaskMutation();
 
   const { data, isLoading, isError } = useGetBoardDetailsQuery(params.id);
+
+  useEffect(() => {
+    if (data && data?.success) {
+      dispatch(setMessages(data?.data?.messages));
+    }
+  }, [data]);
 
   const onDragEnd = async (e) => {
     const { source, destination, type, draggableId } = e;
@@ -89,6 +106,11 @@ const BoardDetails = () => {
             <li>
               <Link href={"/dashboard/board"}>Back</Link>
             </li>
+            <li>
+              <button onClick={() => dispatch(setShowInviteBoardModal(true))}>
+                Invite member
+              </button>
+            </li>
             <li className="text-error">
               <button onClick={() => dispatch(setShowDeleteBoardModal(true))}>
                 Delete
@@ -136,13 +158,14 @@ const BoardDetails = () => {
           </Droppable>
         </DragDropContext>
       </div>
-      {showChatBox && <Widget />}
-      <WidgetToggler />
-      <AddColumnModal />
-      <AddTask />
-      <DeleteBoardModal />
-      <DeleteTaskItemModal />
-      <TaskDetails />
+      {<Widget />}
+      {!showChatBox && <WidgetToggler />}
+      {showAddColumnModal && <AddColumnModal />}
+      {showAddTaskModal && <AddTask />}
+      {showDeleteBoardModal && <DeleteBoardModal />}
+      {showDeleteTaskItemModal && <DeleteTaskItemModal />}
+      {showTaskDetailModal && <TaskDetails />}
+      {showInviteBoardModal && <InviteIntoBoard />}
     </div>
   );
 };

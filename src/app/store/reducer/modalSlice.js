@@ -10,6 +10,7 @@ const modalSlice = createSlice({
     showDeleteBoardModal: false,
     showDeleteTaskItemModal: false,
     showTaskDetailModal: false,
+    showInviteBoardModal: false,
     selectedTaskItem: null,
     taskDetails: null,
   },
@@ -41,6 +42,9 @@ const modalSlice = createSlice({
     setTaskDetails(state, action) {
       state.taskDetails = action.payload;
     },
+    setShowInviteBoardModal(state, action) {
+      state.showInviteBoardModal = action.payload;
+    },
   },
 });
 
@@ -54,5 +58,6 @@ export const {
   setTaskDetails,
   setShowTaskDetailModal,
   setShowChatBox,
+  setShowInviteBoardModal,
 } = modalSlice.actions;
 export default modalSlice.reducer;
