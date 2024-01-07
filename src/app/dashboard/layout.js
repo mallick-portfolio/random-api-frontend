@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
     <ReduxProvider>
       <DashboardHeader />
       <div className="drawer">
-        <div className="drawer-content px-12 py-6">{children}</div>
+        <div className="drawer-content px-12">{children}</div>
         <input id="my-drawer" type="checkbox" className="drawer-toggle" />
         <DashboardSidebar />
       </div>

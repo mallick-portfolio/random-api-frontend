@@ -48,4 +48,10 @@ body {
   .chat-end .chat-bubble:before {
     @apply bg-gradient-to-r from-pink-400 to-pink-500;
   }
+  .bg-first {
+    @apply bg-gradient-to-r from-emerald-400 to-cyan-400 text-white;
+  }
+  .bg-second {
+    @apply bg-gradient-to-r from-pink-400 to-pink-600 text-white;
+  }
 }

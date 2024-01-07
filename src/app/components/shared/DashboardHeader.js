@@ -43,7 +43,7 @@ const DashboardHeader = () => {
             >
               <label
                 htmlFor="my-drawer"
-                className="btn btn-primary drawer-button"
+                className="btn bg-first drawer-button"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -72,10 +72,7 @@ const DashboardHeader = () => {
           {!user ? (
             ""
           ) : (
-            <button
-              onClick={() => logout()}
-              className="btn btn-secondary btn-sm"
-            >
+            <button onClick={() => logout()} className="btn bg-second btn-sm">
               Logout
             </button>
           )}

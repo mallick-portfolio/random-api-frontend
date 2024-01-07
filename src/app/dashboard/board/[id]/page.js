@@ -23,9 +23,12 @@ import DeleteBoardModal from "@/app/components/modal/DeleteBoardModal";
 import DeleteTaskItemModal from "@/app/components/modal/DeleteTaskItemModal";
 import TaskDetails from "@/app/components/modal/TaskDetails";
 import Widget from "@/app/components/widget/Widget";
+import { useSelector } from "react-redux";
+import WidgetToggler from "@/app/components/widget/WidgetToggler";
 
 const BoardDetails = () => {
   const dispatch = useDispatch();
+  const { showChatBox } = useSelector((state) => state.modal);
 
   const params = useParams();
   const [handleMoveColumn, { data: cData, isLoading: cIsLoading }] =
@@ -133,7 +136,8 @@ const BoardDetails = () => {
           </Droppable>
         </DragDropContext>
       </div>
-      <Widget />
+      {showChatBox && <Widget />}
+      <WidgetToggler />
       <AddColumnModal />
       <AddTask />
       <DeleteBoardModal />
