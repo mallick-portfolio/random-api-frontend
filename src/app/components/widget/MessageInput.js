@@ -45,7 +45,13 @@ const MessageInput = () => {
   }, [connectionStatus]);
 
   const handleKeyDown = (event) => {
-    if (event.key === "Enter" && inputText !== "") {
+    if (event.key === "Enter") {
+      handleSend();
+    }
+  };
+
+  const handleSend = () => {
+    if (inputText !== "") {
       const data = {
         content: inputText,
         message_type: "text",
@@ -89,7 +95,7 @@ const MessageInput = () => {
       </div>
       <div className="">
         <button
-          onClick={() => handleClickSendMessage()}
+          onClick={() => handleSend()}
           className="flex items-center justify-center text-white"
         >
           <span className="">

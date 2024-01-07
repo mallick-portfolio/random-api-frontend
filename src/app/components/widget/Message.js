@@ -1,3 +1,4 @@
+import { timeDifference } from "@/app/utils/helpers";
 import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 
@@ -32,8 +33,10 @@ const Message = () => {
               </div>
             </div>
             <div className="chat-header">
-              Anakin
-              <time className="text-xs opacity-50">12:46</time>
+              {message?.sender?.first_name}{" "}
+              <time className="text-xs opacity-50">
+                {timeDifference(message?.created_at)}
+              </time>
             </div>
             <div className="chat-bubble bg-gradient-to-r from-pink-400 to-pink-600">
               {message?.content}
@@ -52,8 +55,10 @@ const Message = () => {
               </div>
             </div>
             <div className="chat-header">
-              Obi-Wan Kenobi
-              <time className="text-xs opacity-50">12:45</time>
+              {message?.sender?.first_name}{" "}
+              <time className="text-xs opacity-50">
+                {timeDifference(message?.created_at)}
+              </time>
             </div>
             <div className="chat-bubble bg-gradient-to-r from-pink-400 to-pink-600">
               {message?.content}
@@ -65,7 +70,7 @@ const Message = () => {
   }
 
   return (
-    <div className="px-2 overflow-y-scroll max-h-[375px]">
+    <div className="px-2 overflow-y-scroll sm:max-h-[375px]">
       {messageLog}
       <div ref={ref}></div>
     </div>

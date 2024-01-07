@@ -31,6 +31,7 @@ import { setMessages } from "@/app/store/reducer/dataSlice";
 
 const BoardDetails = () => {
   const dispatch = useDispatch();
+  const [boardDetails, setBoardDetails] = useState(null);
   const {
     showChatBox,
     showAddColumnModal,
@@ -52,6 +53,7 @@ const BoardDetails = () => {
   useEffect(() => {
     if (data && data?.success) {
       dispatch(setMessages(data?.data?.messages));
+      setBoardDetails(data?.data?.board);
     }
   }, [data]);
 
@@ -158,7 +160,7 @@ const BoardDetails = () => {
           </Droppable>
         </DragDropContext>
       </div>
-      {<Widget />}
+      {<Widget boardDetails={boardDetails} />}
       {!showChatBox && <WidgetToggler />}
       {showAddColumnModal && <AddColumnModal />}
       {showAddTaskModal && <AddTask />}
