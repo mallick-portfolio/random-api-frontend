@@ -24,3 +24,9 @@ export const timeDifference = (date) => {
     return Math.round(elapsed / msPerYear) + " years ago";
   }
 };
+
+export const avaterName = (name = "") => {
+  let words = name.split(" ");
+  let user = words.map((word) => word[0].toUpperCase()).join("");
+  return user;
+};
