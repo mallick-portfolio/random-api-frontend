@@ -20,14 +20,6 @@ const InviteIntoBoard = () => {
 
   const { data, isLoading } = useGetUsersQuery();
 
-  useEffect(() => {
-    if (data && data.success) {
-      toast.success(data.message);
-    } else if (data && data.error) {
-      toast.error(data.message);
-    }
-  }, [data]);
-
   if (isLoading) {
     return <Loading />;
   }

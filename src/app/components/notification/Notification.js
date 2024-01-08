@@ -1,22 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Avater from "../shared/Avater";
 import { useGetIndividualNotificationQuery } from "@/app/store/api/notificationApi";
 import Loading from "../shared/Loading";
+import useWebSocket, { ReadyState } from "react-use-websocket";
+import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
 
 const Notification = () => {
+  const { user } = useSelector((state) => state.global);
+  const [notifications, setNotifications] = useState([]);
   const { data, isLoading } = useGetIndividualNotificationQuery();
 
-  console.log(data?.data);
+  const [socketUrl, setSocketUrl] = useState(
+    `${process.env.NEXT_PUBLIC_WS_URL}/notification/${
+      user?.id
+    }/?token=${Cookies.get("auth_token")}`
+  );
+
+  const { lastMessage } = useWebSocket(socketUrl);
+
+  useEffect(() => {
+    if (data && data?.success) {
+      setNotifications(data?.data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (lastMessage !== null) {
+      const newNotification = JSON.parse(lastMessage.data);
+      console.log(newNotification?.message);
+      if (newNotification?.message?.receiver === user?.id) {
+        const totalNotification = [...notifications, newNotification?.message];
+        setNotifications(totalNotification);
+      }
+    }
+  }, [lastMessage]);
 
   if (isLoading) {
     return <Loading />;
   }
 
   let notificationLog = "";
-  if (data && data?.data?.length) {
-    notificationLog = data?.data?.map((notification) => (
+  if (data && notifications?.length) {
+    notificationLog = notifications?.map((notification) => (
       <li className="my-2 w-full">
-        {console.log(notification)}
         <div
           // key={user?.id}
           className="card flex-row justify-start gap-2 py-2 items-center bg-base-300 shadow-xl"
@@ -38,7 +65,7 @@ const Notification = () => {
   return (
     <ul
       tabIndex={0}
-      className="menu max-h-[400px] overflow-y-auto flex flex-row menu-sm dropdown-content mt-3 z-[1] shadow bg-base-100 rounded-box w-80"
+      className="menu max-h-[300px] overflow-y-auto flex flex-row menu-sm dropdown-content mt-3 z-[1] shadow bg-base-100 rounded-box w-80"
     >
       {notificationLog}
     </ul>

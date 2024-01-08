@@ -15,7 +15,9 @@ const MessageInput = () => {
   const { user } = useSelector((state) => state.global);
 
   const [socketUrl, setSocketUrl] = useState(
-    `ws://localhost:8000/ws/message/${id}/?token=${Cookies.get("auth_token")}`
+    `${process.env.NEXT_PUBLIC_WS_URL}/message/${id}/?token=${Cookies.get(
+      "auth_token"
+    )}`
   );
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
@@ -35,8 +37,6 @@ const MessageInput = () => {
     [ReadyState.CLOSED]: "Closed",
     [ReadyState.UNINSTANTIATED]: "Uninstantiated",
   }[readyState];
-
-  console.log(connectionStatus);
 
   useEffect(() => {
     if (connectionStatus && connectionStatus === "Closed") {
