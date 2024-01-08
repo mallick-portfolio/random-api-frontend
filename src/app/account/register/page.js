@@ -22,7 +22,8 @@ const Register = () => {
         autoClose: 2000,
         position: "bottom-right",
       });
-      router.push(`/account/email-verify/?email=${email}`);
+      router.push(`/account/email-verify?email=${email}`);
+      setEmail("");
     } else if (data && data?.error && !data?.success) {
       toast.error(data?.message);
     }

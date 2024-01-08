@@ -17,6 +17,15 @@ export const accountApi = createApi({
         },
       }),
     }),
+    getUsers: builder.query({
+      query: () => ({
+        url: "/account/users/",
+        method: "get",
+        headers: {
+          Authorization: `Bearer ${Cookies.get("auth_token")}`,
+        },
+      }),
+    }),
     // user login api
     userLogin: builder.mutation({
       query: (logindata) => ({
@@ -61,4 +70,5 @@ export const {
   useUserRegisterMutation,
   useUserLogoutMutation,
   useVerifyEmailOTPMutation,
+  useGetUsersQuery,
 } = accountApi;

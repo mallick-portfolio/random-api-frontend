@@ -159,7 +159,7 @@ const BoardDetails = () => {
             )}
           </Droppable>
         </DragDropContext>
-      </div>
+      </div> 
       {<Widget boardDetails={boardDetails} />}
       {!showChatBox && <WidgetToggler />}
       {showAddColumnModal && <AddColumnModal />}

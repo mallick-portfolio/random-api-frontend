@@ -3,16 +3,17 @@ import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-import { redirect, useRouter } from "next/navigation";
+import { redirect, usePathname, useSearchParams } from "next/navigation";
 import Cookies from "js-cookie";
 import { useVerifyEmailOTPMutation } from "@/app/store/api/accountApi";
 import Loading from "@/app/components/shared/Loading";
 import { useSelector } from "react-redux";
 
 const EmailVerify = () => {
+  const searchParams = useSearchParams();
+
   const [handleVerifyEmailOTP, { data, isLoading }] =
     useVerifyEmailOTPMutation();
-  const { user } = useSelector((state) => state.global);
 
   useEffect(() => {
     if (data && data?.success) {
@@ -34,7 +35,7 @@ const EmailVerify = () => {
     otp: Yup.string().required("Otp is required"),
   });
   const onSubmit = async (values) => {
-    values.email = "tamal.mallick8@gmail.com";
+    values.email = searchParams.get("email");
     await handleVerifyEmailOTP(values);
   };
 
@@ -43,9 +44,6 @@ const EmailVerify = () => {
 
   if (isLoading) {
     return <Loading />;
-  }
-  if (user?.id && Cookies.get("auth_token")) {
-    redirect("/dashboard");
   }
 
   return (
