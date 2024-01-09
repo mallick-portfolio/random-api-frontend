@@ -137,7 +137,7 @@ export const taskApi = createApi({
           },
         };
       },
-      // invalidatesTags: [""],
+      invalidatesTags: ["task-item"],
     }),
   }),
 });

@@ -17,7 +17,17 @@ const Notification = () => {
     }/?token=${Cookies.get("auth_token")}`
   );
 
-  const { lastMessage } = useWebSocket(socketUrl);
+  const { lastMessage, readyState } = useWebSocket(socketUrl);
+
+  const connectionStatus = {
+    [ReadyState.CONNECTING]: "Connecting",
+    [ReadyState.OPEN]: "Open",
+    [ReadyState.CLOSING]: "Closing",
+    [ReadyState.CLOSED]: "Closed",
+    [ReadyState.UNINSTANTIATED]: "Uninstantiated",
+  }[readyState];
+
+  console.log("notification connection", connectionStatus);
 
   useEffect(() => {
     if (data && data?.success) {
@@ -28,6 +38,7 @@ const Notification = () => {
   useEffect(() => {
     if (lastMessage !== null) {
       const newNotification = JSON.parse(lastMessage.data);
+      console.log(newNotification);
       console.log(newNotification?.message);
       if (newNotification?.message?.receiver === user?.id) {
         const totalNotification = [...notifications, newNotification?.message];
@@ -53,11 +64,9 @@ const Notification = () => {
               name={`${notification?.sender?.first_name} ${notification?.sender?.last_name}`}
             />
           </div>
-          <p>
-            {notification?.message?.length > 35
-              ? notification?.message?.slice(0, 35)
-              : notification?.message}
-          </p>
+          <div
+            dangerouslySetInnerHTML={{ __html: notification?.message }}
+          ></div>
         </div>
       </li>
     ));

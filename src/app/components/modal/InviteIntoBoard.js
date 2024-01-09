@@ -12,8 +12,8 @@ import { useParams } from "next/navigation";
 const InviteIntoBoard = () => {
   const dispatch = useDispatch();
   const { showInviteBoardModal } = useSelector((state) => state.modal);
+  const { currentBoard } = useSelector((state) => state.apiStateData);
   const { id } = useParams();
-  console.log(id);
 
   const { ref } = useComponentVisible(
     showInviteBoardModal,
@@ -46,49 +46,64 @@ const InviteIntoBoard = () => {
     return <Loading />;
   }
 
+  const invited_members = currentBoard?.invited_members?.map(
+    (mem) => mem?.user
+  );
+  const authorize_users = currentBoard?.board?.authorize_users?.map(
+    (mem) => mem?.id
+  );
+  console.log(authorize_users);
+
   let userLog = "";
   if (data && data?.data?.length) {
-    userLog = data?.data?.map((user) => (
-      <div
-        key={user?.id}
-        className="card flex-row justify-between gap-4 px-4 py-2 items-center bg-base-100 shadow-xl"
-      >
-        <div className="avatar">
-          <div className="w-16 rounded-full">
-            <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-          </div>
-        </div>
-        <div className="">
-          <h2 className="text-lg">
-            {user?.first_name} {user?.last_name}
-          </h2>
-          <p>{user?.email}</p>
-        </div>
-        <div className="badge bg-second w-12 h-12 rounded-full">
-          <button
-            onClick={() => handleInviteMember(user?.id)}
-            className="flex items-center justify-center text-white"
+    userLog = data?.data?.map((user) => {
+      if (
+        !invited_members?.includes(user?.id) &&
+        !authorize_users?.includes(user?.id)
+      ) {
+        return (
+          <div
+            key={user?.id}
+            className="card flex-row justify-between gap-4 px-4 py-2 items-center bg-base-100 shadow-xl"
           >
-            <span className="">
-              <svg
-                className="w-5 h-5 transform rotate-45 -mt-px"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+            <div className="avatar">
+              <div className="w-16 rounded-full">
+                <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+              </div>
+            </div>
+            <div className="">
+              <h2 className="text-lg">
+                {user?.first_name} {user?.last_name}
+              </h2>
+              <p>{user?.email}</p>
+            </div>
+            <div className="badge bg-second w-12 h-12 rounded-full">
+              <button
+                onClick={() => handleInviteMember(user?.id)}
+                className="flex items-center justify-center text-white"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  stroke-width="2"
-                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                ></path>
-              </svg>
-            </span>
-          </button>
-        </div>
-      </div>
-    ));
+                <span className="">
+                  <svg
+                    className="w-5 h-5 transform rotate-45 -mt-px"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      stroke-width="2"
+                      d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                    ></path>
+                  </svg>
+                </span>
+              </button>
+            </div>
+          </div>
+        );
+      }
+    });
   }
   return (
     <div>

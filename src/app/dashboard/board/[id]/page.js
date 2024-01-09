@@ -27,7 +27,7 @@ import Widget from "@/app/components/widget/Widget";
 import { useSelector } from "react-redux";
 import WidgetToggler from "@/app/components/widget/WidgetToggler";
 import InviteIntoBoard from "@/app/components/modal/InviteIntoBoard";
-import { setMessages } from "@/app/store/reducer/dataSlice";
+import { setCurrentBoard, setMessages } from "@/app/store/reducer/dataSlice";
 
 const BoardDetails = () => {
   const dispatch = useDispatch();
@@ -53,6 +53,7 @@ const BoardDetails = () => {
   useEffect(() => {
     if (data && data?.success) {
       dispatch(setMessages(data?.data?.messages));
+      dispatch(setCurrentBoard(data?.data));
       setBoardDetails(data?.data?.board);
     }
   }, [data]);
@@ -159,7 +160,7 @@ const BoardDetails = () => {
             )}
           </Droppable>
         </DragDropContext>
-      </div> 
+      </div>
       {<Widget boardDetails={boardDetails} />}
       {!showChatBox && <WidgetToggler />}
       {showAddColumnModal && <AddColumnModal />}
