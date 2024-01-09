@@ -126,6 +126,19 @@ export const taskApi = createApi({
       },
       invalidatesTags: ["task-item"],
     }),
+    inviteBoardMember: builder.mutation({
+      query: ({ action, data }) => {
+        return {
+          url: `/task-board/invite-board-member/${action}/`,
+          method: "POST",
+          body: data,
+          headers: {
+            Authorization: `Bearer ${Cookies.get("auth_token")}`,
+          },
+        };
+      },
+      // invalidatesTags: [""],
+    }),
   }),
 });
 
@@ -141,4 +154,5 @@ export const {
   useDeleteTaskItemMutation,
   useMoveTaskMutation,
   useLazyGetTaskDetailsQuery,
+  useInviteBoardMemberMutation,
 } = taskApi;

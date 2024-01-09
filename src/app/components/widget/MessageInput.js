@@ -38,6 +38,9 @@ const MessageInput = () => {
     [ReadyState.UNINSTANTIATED]: "Uninstantiated",
   }[readyState];
 
+  console.log("message connection", connectionStatus)
+
+
   useEffect(() => {
     if (connectionStatus && connectionStatus === "Closed") {
       dispatch(setShowChatBox(false));

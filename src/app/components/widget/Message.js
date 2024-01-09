@@ -7,7 +7,6 @@ const Message = () => {
   const { messages } = useSelector((state) => state.apiStateData);
   const { user } = useSelector((state) => state.global);
 
-  console.log(user?.id);
   const handleScrollToBottom = () => {
     ref.current.scrollIntoView();
   };

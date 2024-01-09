@@ -6,10 +6,14 @@ import Loading from "../shared/Loading";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { useGetUsersQuery } from "@/app/store/api/accountApi";
+import { useInviteBoardMemberMutation } from "@/app/store/api/taskApi";
+import { useParams } from "next/navigation";
 
 const InviteIntoBoard = () => {
   const dispatch = useDispatch();
   const { showInviteBoardModal } = useSelector((state) => state.modal);
+  const { id } = useParams();
+  console.log(id);
 
   const { ref } = useComponentVisible(
     showInviteBoardModal,
@@ -19,8 +23,26 @@ const InviteIntoBoard = () => {
   // api call
 
   const { data, isLoading } = useGetUsersQuery();
+  // api call
+  const [handleInvite, { data: iData, isLoading: iIsLoading }] =
+    useInviteBoardMemberMutation();
 
-  if (isLoading) {
+  // invite board member handler
+  const handleInviteMember = (user_id) => {
+    const data = {
+      user_id,
+      unique_id: id,
+    };
+    handleInvite({ action: "invite-board", data });
+  };
+
+  useEffect(() => {
+    if (iData && iData?.success) {
+      toast.success(iData?.message);
+    }
+  }, [iData]);
+
+  if (isLoading || iIsLoading) {
     return <Loading />;
   }
 
@@ -43,7 +65,10 @@ const InviteIntoBoard = () => {
           <p>{user?.email}</p>
         </div>
         <div className="badge bg-second w-12 h-12 rounded-full">
-          <button className="flex items-center justify-center text-white">
+          <button
+            onClick={() => handleInviteMember(user?.id)}
+            className="flex items-center justify-center text-white"
+          >
             <span className="">
               <svg
                 className="w-5 h-5 transform rotate-45 -mt-px"

@@ -6,7 +6,6 @@ import Message from "./Message";
 import MessageInput from "./MessageInput";
 
 const Widget = ({ boardDetails }) => {
-  console.log(boardDetails);
   const dispatch = useDispatch();
   const { showChatBox } = useSelector((state) => state.modal);
 

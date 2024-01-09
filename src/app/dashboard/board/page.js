@@ -34,7 +34,7 @@ const Board = () => {
         </h1>
         <button
           onClick={() => dispatch(setShowAddBoardModal(true))}
-          className="btn btn-sm btn-primary"
+          className="btn btn-sm bg-first"
         >
           Add board
         </button>
