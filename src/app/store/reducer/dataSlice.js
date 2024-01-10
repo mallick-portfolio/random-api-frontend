@@ -5,6 +5,7 @@ const dataSlice = createSlice({
   initialState: {
     messages: [],
     currentBoard: [],
+    currentNotifications: [],
   },
   reducers: {
     setMessages(state, action) {
@@ -13,8 +14,12 @@ const dataSlice = createSlice({
     setCurrentBoard(state, action) {
       state.currentBoard = action.payload;
     },
+    setCurrentNotifications(state, action) {
+      state.currentNotifications = action.payload;
+    },
   },
 });
 
-export const { setMessages, setCurrentBoard } = dataSlice.actions;
+export const { setMessages, setCurrentBoard, setCurrentNotifications } =
+  dataSlice.actions;
 export default dataSlice.reducer;

@@ -6,7 +6,7 @@ export const notificationApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_API_URL}`,
   }),
-  tagTypes: [],
+  tagTypes: ["notification"],
   endpoints: (builder) => ({
     getIndividualNotification: builder.query({
       query: () => ({
@@ -16,22 +16,25 @@ export const notificationApi = createApi({
           Authorization: `Bearer ${Cookies.get("auth_token")}`,
         },
       }),
-      providesTags: [],
+      providesTags: ["notification"],
     }),
-    deleteTaskItem: builder.mutation({
+    deleteNotification: builder.mutation({
       query: (id) => {
         return {
-          url: `/task-board/task-item/${id}/`,
+          url: `/notification/${id}/`,
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${Cookies.get("auth_token")}`,
           },
         };
       },
-      invalidatesTags: [],
+      invalidatesTags: ["notification"],
     }),
   }),
 });
 
 // Export the auto-generated hook for the `getPosts` query endpoint
-export const { useGetIndividualNotificationQuery } = notificationApi;
+export const {
+  useGetIndividualNotificationQuery,
+  useDeleteNotificationMutation,
+} = notificationApi;

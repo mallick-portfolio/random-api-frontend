@@ -5,8 +5,17 @@ import Loading from "../shared/Loading";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
+import { MdDelete } from "react-icons/md";
+import DeleteNotification from "../modal/DeleteNotification";
+import { useDispatch } from "react-redux";
+import {
+  setSelectedNotificationId,
+  setShowDeleteNotificationModal,
+} from "@/app/store/reducer/modalSlice";
+import { setCurrentNotifications } from "@/app/store/reducer/dataSlice";
 
 const Notification = () => {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.global);
   const [notifications, setNotifications] = useState([]);
   const { data, isLoading } = useGetIndividualNotificationQuery();
@@ -32,6 +41,7 @@ const Notification = () => {
   useEffect(() => {
     if (data && data?.success) {
       setNotifications(data?.data);
+      dispatch(setCurrentNotifications(data?.data));
     }
   }, [data]);
 
@@ -54,7 +64,10 @@ const Notification = () => {
   let notificationLog = "";
   if (data && notifications?.length) {
     notificationLog = notifications?.map((notification) => (
-      <li className="my-2 w-full">
+      <li
+        key={notification?.id}
+        className="my-2 flex justify-between items-center w-full"
+      >
         <div
           // key={user?.id}
           className="card flex-row justify-start gap-2 py-2 items-center bg-base-300 shadow-xl"
@@ -67,17 +80,35 @@ const Notification = () => {
           <div
             dangerouslySetInnerHTML={{ __html: notification?.message }}
           ></div>
+          <button
+            onClick={() => {
+              dispatch(setShowDeleteNotificationModal(true));
+              dispatch(setSelectedNotificationId(notification?.id));
+            }}
+            className="p-1 rounded-full border border-red-500 ml-auto text-red-500 float-right font-semibold outline-none focus:outline-none"
+          >
+            <span className=" text-red-500  text-sm outline-none focus:outline-none">
+              <MdDelete />
+            </span>
+          </button>
         </div>
       </li>
     ));
   }
   return (
-    <ul
-      tabIndex={0}
-      className="menu max-h-[300px] overflow-y-auto flex flex-row menu-sm dropdown-content mt-3 z-[1] shadow bg-base-100 rounded-box w-80"
-    >
-      {notificationLog}
-    </ul>
+    <>
+      {notifications?.length ? (
+        <ul
+          tabIndex={0}
+          className="menu max-h-[300px] overflow-y-auto flex flex-row menu-sm dropdown-content mt-3 z-[1] shadow bg-base-100 rounded-box w-80"
+        >
+          {notificationLog}
+        </ul>
+      ) : (
+        ""
+      )}
+      <DeleteNotification />
+    </>
   );
 };
 

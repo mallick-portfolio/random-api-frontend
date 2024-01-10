@@ -31,7 +31,12 @@ import { setCurrentBoard, setMessages } from "@/app/store/reducer/dataSlice";
 
 const BoardDetails = () => {
   const dispatch = useDispatch();
+  const params = useParams();
   const [boardDetails, setBoardDetails] = useState(null);
+
+  // redux store state
+  const { user } = useSelector((state) => state.global);
+  console.log(user, boardDetails?.user);
   const {
     showChatBox,
     showAddColumnModal,
@@ -42,7 +47,7 @@ const BoardDetails = () => {
     showInviteBoardModal,
   } = useSelector((state) => state.modal);
 
-  const params = useParams();
+  // api call
   const [handleMoveColumn, { data: cData, isLoading: cIsLoading }] =
     useMoveColumnMutation();
   const [handleMoveTask, { data: tData, isLoading: tIsLoading }] =
@@ -109,16 +114,27 @@ const BoardDetails = () => {
             <li>
               <Link href={"/dashboard/board"}>Back</Link>
             </li>
-            <li>
-              <button onClick={() => dispatch(setShowInviteBoardModal(true))}>
-                Invite member
-              </button>
-            </li>
-            <li className="text-error">
-              <button onClick={() => dispatch(setShowDeleteBoardModal(true))}>
-                Delete
-              </button>
-            </li>
+            {user?.id === boardDetails?.user?.id ? (
+              <>
+                {" "}
+                <li>
+                  <button
+                    onClick={() => dispatch(setShowInviteBoardModal(true))}
+                  >
+                    Invite member
+                  </button>
+                </li>
+                <li className="text-error">
+                  <button
+                    onClick={() => dispatch(setShowDeleteBoardModal(true))}
+                  >
+                    Delete
+                  </button>
+                </li>
+              </>
+            ) : (
+              ""
+            )}
           </ul>
         </div>
       </div>
