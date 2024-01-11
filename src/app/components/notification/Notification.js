@@ -51,7 +51,7 @@ const Notification = () => {
       console.log(newNotification);
       console.log(newNotification?.message);
       if (newNotification?.message?.receiver === user?.id) {
-        const totalNotification = [...notifications, newNotification?.message];
+        const totalNotification = [newNotification?.message, ...notifications];
         setNotifications(totalNotification);
       }
     }
