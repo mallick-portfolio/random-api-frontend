@@ -48,8 +48,6 @@ const Notification = () => {
   useEffect(() => {
     if (lastMessage !== null) {
       const newNotification = JSON.parse(lastMessage.data);
-      console.log(newNotification);
-      console.log(newNotification?.message);
       if (newNotification?.message?.receiver === user?.id) {
         const totalNotification = [newNotification?.message, ...notifications];
         setNotifications(totalNotification);

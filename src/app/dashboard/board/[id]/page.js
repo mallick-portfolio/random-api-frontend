@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import {
   useGetBoardDetailsQuery,
   useMoveColumnMutation,
@@ -32,11 +32,11 @@ import { setCurrentBoard, setMessages } from "@/app/store/reducer/dataSlice";
 const BoardDetails = () => {
   const dispatch = useDispatch();
   const params = useParams();
+  const router = useRouter();
   const [boardDetails, setBoardDetails] = useState(null);
 
   // redux store state
   const { user } = useSelector((state) => state.global);
-  console.log(user, boardDetails?.user);
   const {
     showChatBox,
     showAddColumnModal,
@@ -54,12 +54,15 @@ const BoardDetails = () => {
     useMoveTaskMutation();
 
   const { data, isLoading, isError } = useGetBoardDetailsQuery(params.id);
+  console.log(data);
 
   useEffect(() => {
     if (data && data?.success) {
       dispatch(setMessages(data?.data?.messages));
       dispatch(setCurrentBoard(data?.data));
       setBoardDetails(data?.data?.board);
+    } else if (data && !data?.success) {
+      router.push("/dashboard/board/");
     }
   }, [data]);
 

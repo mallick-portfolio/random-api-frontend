@@ -40,14 +40,6 @@ export default function Task({ task, index }) {
             <h4 className="text-lg">{task?.title}</h4>
           </div>
 
-          <div className="flex justify-end p-2">
-            <div>
-              <img
-                onClick={() => console.log(task)}
-                src={"https://joesch.moe/api/v1/random?key=" + task?.id}
-              />
-            </div>
-          </div>
           {provided.placeholder}
         </div>
       )}

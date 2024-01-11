@@ -2,17 +2,27 @@ import { setMessages } from "@/app/store/reducer/dataSlice";
 import { setShowChatBox } from "@/app/store/reducer/modalSlice";
 import Cookies from "js-cookie";
 import { useParams } from "next/navigation";
-import React, { use, useCallback, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import useWebSocket, { ReadyState } from "react-use-websocket";
+import { IoImageOutline } from "react-icons/io5";
+import { useMessageFilesUploadMutation } from "@/app/store/api/taskApi";
 
 const MessageInput = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const inputFileRef = useRef(null);
+  const inputImageRef = useRef(null);
+
   const [inputText, setInputText] = useState("");
   const { messages } = useSelector((state) => state.apiStateData);
   const { user } = useSelector((state) => state.global);
+
+  // api call
+  const [handleFileUpload, { data, isLoading }] =
+    useMessageFilesUploadMutation();
+  console.log("is loading", isLoading);
 
   const [socketUrl, setSocketUrl] = useState(
     `${process.env.NEXT_PUBLIC_WS_URL}/message/${id}/?token=${Cookies.get(
@@ -22,14 +32,6 @@ const MessageInput = () => {
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
 
-  useEffect(() => {
-    if (lastMessage !== null) {
-      const newMessage = JSON.parse(lastMessage.data);
-      const totalMessage = [...messages, newMessage];
-      dispatch(setMessages(totalMessage));
-    }
-  }, [lastMessage]);
-
   const connectionStatus = {
     [ReadyState.CONNECTING]: "Connecting",
     [ReadyState.OPEN]: "Open",
@@ -37,6 +39,14 @@ const MessageInput = () => {
     [ReadyState.CLOSED]: "Closed",
     [ReadyState.UNINSTANTIATED]: "Uninstantiated",
   }[readyState];
+
+  useEffect(() => {
+    if (lastMessage !== null) {
+      const newMessage = JSON.parse(lastMessage.data);
+      const totalMessage = [...messages, newMessage];
+      dispatch(setMessages(totalMessage));
+    }
+  }, [lastMessage]);
 
   console.log("message connection", connectionStatus);
 
@@ -46,12 +56,14 @@ const MessageInput = () => {
     }
   }, [connectionStatus]);
 
+  // enter button press handler
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handleSend();
     }
   };
 
+  // handle text message send
   const handleSend = () => {
     if (inputText !== "") {
       const data = {
@@ -64,9 +76,27 @@ const MessageInput = () => {
     }
   };
 
+  // image upload handler
+  const onImageChangeCapture = (e) => {
+    const form = new FormData();
+    const images = e.target.files;
+    for (let i = 0; i < images.length; i++) {
+      form.append("image", images[i]);
+      form.append("media_type", "image");
+    }
+    handleFileUpload()
+    console.log(form);
+  };
+
   return (
     <div className="flex gap-1 absolute bottom-0 right-0 left-0 flex-row items-center h-12 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white w-full px-2">
-      <div>
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => inputImageRef.current.click()}
+          className="flex items-center justify-center "
+        >
+          <IoImageOutline />
+        </button>
         <button className="flex items-center justify-center ">
           <svg
             className="w-5 h-5"
@@ -86,6 +116,15 @@ const MessageInput = () => {
       </div>
       <div className="flex-grow">
         <div className="relative w-full">
+          <input
+            type="file"
+            name="image"
+            accept="image/png, image/jpeg"
+            hidden
+            ref={inputImageRef}
+            multiple
+            onChange={onImageChangeCapture}
+          />
           <input
             type="text"
             onKeyDown={handleKeyDown}

@@ -77,7 +77,6 @@ export const taskApi = createApi({
     }),
     moveColumn: builder.mutation({
       query: ({ data, id }) => {
-        console.log(id, data);
         return {
           url: `/task-board/task-item/${id}/`,
           method: "PUT",
@@ -139,6 +138,21 @@ export const taskApi = createApi({
       },
       invalidatesTags: ["task-item"],
     }),
+    messageFilesUpload: builder.mutation({
+      query: ({ id, formData }) => {
+        return {
+          url: `/message/${id}/`,
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${Cookies.get("auth_token")}`,
+            "Content-Type": "multipart/form-data;",
+          },
+          body: formData,
+          formData: true,
+        };
+      },
+      invalidatesTags: ["task-item"],
+    }),
   }),
 });
 
@@ -155,4 +169,5 @@ export const {
   useMoveTaskMutation,
   useLazyGetTaskDetailsQuery,
   useInviteBoardMemberMutation,
+  useMessageFilesUploadMutation,
 } = taskApi;

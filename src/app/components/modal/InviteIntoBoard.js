@@ -52,7 +52,6 @@ const InviteIntoBoard = () => {
   const authorize_users = currentBoard?.board?.authorize_users?.map(
     (mem) => mem?.id
   );
-  console.log(authorize_users);
 
   let userLog = "";
   if (data && data?.data?.length) {

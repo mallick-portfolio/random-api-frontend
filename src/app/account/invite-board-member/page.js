@@ -7,7 +7,6 @@ import Loading from "@/app/components/shared/Loading";
 import { useInviteBoardMemberMutation } from "@/app/store/api/taskApi";
 
 const InvitedBoard = () => {
-  console.log("i am calling");
   const searchParams = useSearchParams();
   const user = searchParams.get("user");
   const board = searchParams.get("board");
