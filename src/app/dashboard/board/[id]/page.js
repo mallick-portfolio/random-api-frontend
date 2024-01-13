@@ -28,6 +28,7 @@ import { useSelector } from "react-redux";
 import WidgetToggler from "@/app/components/widget/WidgetToggler";
 import InviteIntoBoard from "@/app/components/modal/InviteIntoBoard";
 import { setCurrentBoard, setMessages } from "@/app/store/reducer/dataSlice";
+import Avater from "@/app/components/shared/Avater";
 
 const BoardDetails = () => {
   const dispatch = useDispatch();
@@ -37,6 +38,8 @@ const BoardDetails = () => {
 
   // redux store state
   const { user } = useSelector((state) => state.global);
+  const { currentBoard } = useSelector((state) => state.apiStateData);
+
   const {
     showChatBox,
     showAddColumnModal,
@@ -54,7 +57,6 @@ const BoardDetails = () => {
     useMoveTaskMutation();
 
   const { data, isLoading, isError } = useGetBoardDetailsQuery(params.id);
-  console.log(data);
 
   useEffect(() => {
     if (data && data?.success) {
@@ -106,39 +108,66 @@ const BoardDetails = () => {
         <h1 className=" p-2 border-primary py-5 flex text-2xl justify-center items-center  text-center">
           {data?.data?.board?.title}
         </h1>
-        <div className="dropdown dropdown-end">
-          <div tabIndex={0} role="button" className="btn btn-sm m-1">
-            <IoIosArrowDropdown className="text-xl" />
-          </div>
-          <ul
-            tabIndex={0}
-            className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-44"
-          >
-            <li>
-              <Link href={"/dashboard/board"}>Back</Link>
-            </li>
-            {user?.id === boardDetails?.user?.id ? (
-              <>
-                {" "}
-                <li>
-                  <button
-                    onClick={() => dispatch(setShowInviteBoardModal(true))}
-                  >
-                    Invite member
-                  </button>
-                </li>
-                <li className="text-error">
-                  <button
-                    onClick={() => dispatch(setShowDeleteBoardModal(true))}
-                  >
-                    Delete
-                  </button>
-                </li>
-              </>
+
+        <div className="flex items-center gap-3">
+          <div className="avatar-group -space-x-6 rtl:space-x-reverse">
+            {currentBoard?.board?.authorize_users
+              ?.slice(0, 4)
+              ?.map((mem, index) => (
+                <div className="">
+                  <Avater
+                    css={"bg-second w-10"}
+                    name={`${mem?.first_name} ${mem?.last_name}`}
+                  />
+                </div>
+              ))}
+
+            {currentBoard?.board?.authorize_users?.length > 4 ? (
+              <div className="avatar placeholder">
+                <div className="w-10 bg-first text-neutral-content">
+                  <span>
+                    {currentBoard?.board?.authorize_users?.length - 4}
+                  </span>
+                </div>
+              </div>
             ) : (
               ""
             )}
-          </ul>
+          </div>
+          <div className="dropdown dropdown-end">
+            <div tabIndex={0} role="button" className="btn btn-sm m-1">
+              <IoIosArrowDropdown className="text-xl" />
+            </div>
+            <ul
+              tabIndex={0}
+              className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-44"
+            >
+              <li>
+                <Link href={"/dashboard/board"}>Back</Link>
+              </li>
+              {user?.id === boardDetails?.user?.id ? (
+                <>
+                  {" "}
+                  <li>
+                    <button
+                      onClick={() => dispatch(setShowInviteBoardModal(true))}
+                    >
+                      Invite member
+                    </button>
+                  </li>
+                  <li className="text-error">
+                    <button
+                      onClick={() => dispatch(setShowDeleteBoardModal(true))}
+                    >
+                      Delete
+                    </button>
+                  </li>
+                </>
+              ) : (
+                ""
+              )}
+            </ul>
+          </div>
         </div>
       </div>
       <div className="overflow-auto min-h-[calc(100vh-6.5rem)] p-4 rounded-md">

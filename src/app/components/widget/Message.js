@@ -45,10 +45,10 @@ const Message = () => {
             </div>
             <div className=" p-1 flex flex-col gap-1 bg-transparent">
               {message?.attachments?.map((att) => {
-                console.log(att?.media_type === "file");
                 if (att?.media_type === "image") {
                   return (
                     <img
+                      key={att?.id}
                       className=" rounded-lg w-32 h-auto"
                       alt="message image "
                       src={`${process.env.NEXT_PUBLIC_MEDIA_URL}` + att.image}
@@ -56,7 +56,10 @@ const Message = () => {
                   );
                 } else if (att?.media_type === "file") {
                   return (
-                    <div className="chat-bubble bg-gradient-to-r from-pink-400 to-pink-600">
+                    <div
+                      key={att?.id}
+                      className="chat-bubble bg-gradient-to-r from-pink-400 to-pink-600"
+                    >
                       <a
                         target="_blank"
                         href={
