@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { IoImageOutline } from "react-icons/io5";
 import { useMessageFilesUploadMutation } from "@/app/store/api/taskApi";
+import axios from "axios";
 
 const MessageInput = () => {
   const { id } = useParams();
@@ -16,13 +17,12 @@ const MessageInput = () => {
   const inputImageRef = useRef(null);
 
   const [inputText, setInputText] = useState("");
-  const { messages } = useSelector((state) => state.apiStateData);
+  const { messages, currentBoard } = useSelector((state) => state.apiStateData);
   const { user } = useSelector((state) => state.global);
 
   // api call
   const [handleFileUpload, { data, isLoading }] =
     useMessageFilesUploadMutation();
-  console.log("is loading", isLoading);
 
   const [socketUrl, setSocketUrl] = useState(
     `${process.env.NEXT_PUBLIC_WS_URL}/message/${id}/?token=${Cookies.get(
@@ -77,15 +77,45 @@ const MessageInput = () => {
   };
 
   // image upload handler
-  const onImageChangeCapture = (e) => {
+  const onImageChangeCapture = async (e) => {
     const form = new FormData();
     const images = e.target.files;
     for (let i = 0; i < images.length; i++) {
       form.append("image", images[i]);
       form.append("media_type", "image");
     }
-    handleFileUpload()
-    console.log(form);
+    form.append("board_id", currentBoard?.board?.id);
+    form.append("media_type", "image");
+    const res = await axios.post(
+      `http://127.0.0.1:8000/api/v1/message/attachments/`,
+      form,
+      {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("auth_token")}`,
+          "Content-Type": "multipart/form-data;",
+        },
+      }
+    );
+  };
+  // image upload handler
+  const onFileChangeCapture = async (e) => {
+    const form = new FormData();
+    const images = e.target.files;
+    for (let i = 0; i < images.length; i++) {
+      form.append("file", images[i]);
+      form.append("media_type", "file");
+    }
+    form.append("board_id", currentBoard?.board?.id);
+    const res = await axios.post(
+      `http://127.0.0.1:8000/api/v1/message/attachments/`,
+      form,
+      {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("auth_token")}`,
+          "Content-Type": "multipart/form-data;",
+        },
+      }
+    );
   };
 
   return (
@@ -97,7 +127,10 @@ const MessageInput = () => {
         >
           <IoImageOutline />
         </button>
-        <button className="flex items-center justify-center ">
+        <button
+          onClick={() => inputFileRef.current.click()}
+          className="flex items-center justify-center "
+        >
           <svg
             className="w-5 h-5"
             fill="none"
@@ -119,11 +152,20 @@ const MessageInput = () => {
           <input
             type="file"
             name="image"
-            accept="image/png, image/jpeg"
+            accept=".png, .jpg, .jpeg, .webp"
             hidden
             ref={inputImageRef}
             multiple
             onChange={onImageChangeCapture}
+          />
+          <input
+            type="file"
+            name="image"
+            accept=".pdf,.xml, .txt"
+            hidden
+            ref={inputFileRef}
+            multiple
+            onChange={onFileChangeCapture}
           />
           <input
             type="text"

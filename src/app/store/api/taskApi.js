@@ -139,9 +139,9 @@ export const taskApi = createApi({
       invalidatesTags: ["task-item"],
     }),
     messageFilesUpload: builder.mutation({
-      query: ({ id, formData }) => {
+      query: (formData) => {
         return {
-          url: `/message/${id}/`,
+          url: `/message/attachments/`,
           method: "POST",
           headers: {
             Authorization: `Bearer ${Cookies.get("auth_token")}`,

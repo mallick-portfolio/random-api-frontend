@@ -1,7 +1,7 @@
 import { avaterName } from "@/app/utils/helpers";
 import React from "react";
 
-const Avater = ({ image = "", name = "Anonimus user" }) => {
+const Avater = ({ image = "", name = "Anonimus user", css }) => {
   return (
     <div>
       {image ? (
@@ -9,8 +9,12 @@ const Avater = ({ image = "", name = "Anonimus user" }) => {
           <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
         </div>
       ) : (
-        <div className="avatar online placeholder">
-          <div className="bg-first text-neutral-content rounded-full w-12">
+        <div className="avatar  placeholder">
+          <div
+            className={`${
+              css ? css : "bg-first w-12"
+            } text-neutral-content rounded-full`}
+          >
             <span className="text-xl">{avaterName(name)}</span>
           </div>
         </div>
