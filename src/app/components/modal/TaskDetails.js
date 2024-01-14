@@ -2,9 +2,20 @@ import { setShowTaskDetailModal } from "@/app/store/reducer/modalSlice";
 import useComponentVisible from "@/app/utils/useComponentVisible";
 import { useDispatch, useSelector } from "react-redux";
 import { HiMiniXMark } from "react-icons/hi2";
+import {
+  useDeleteTaskMutation,
+  useTaskChecklistMutation,
+} from "@/app/store/api/taskApi";
+import Loading from "../shared/Loading";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const TaskDetails = () => {
   const dispatch = useDispatch();
+  const [itemName, setItemName] = useState("");
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [selectedId, setSelectedId] = useState(false);
+
   const { showTaskDetailModal, taskDetails } = useSelector(
     (state) => state.modal
   );
@@ -13,6 +24,72 @@ const TaskDetails = () => {
     showTaskDetailModal,
     setShowTaskDetailModal
   );
+
+  console.log("taskDetails", taskDetails?.taskLabels);
+
+  // api call
+  const [handleDeleteTask, { isLoading, data }] = useDeleteTaskMutation();
+  const [handleAddChecklist, { data: iData, isLoading: iLoading }] =
+    useTaskChecklistMutation();
+
+  useEffect(() => {
+    if (data && data?.success) {
+      toast.success(data?.message);
+      dispatch(setShowTaskDetailModal(false));
+    } else if (data && data?.error) {
+      toast.error(data?.message);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (iData && iData?.id) {
+      toast.success("Task checklist added successfully");
+      setItemName("");
+    } else if (iData && !iData?.id) {
+      toast.error("Failed to add checklist!!!");
+    }
+  }, [iData]);
+
+  const handleAddItem = async () => {
+    if (itemName && itemName !== "") {
+      const formData = {
+        title: itemName,
+        task: taskDetails?.id,
+      };
+      await handleAddChecklist({
+        formData,
+        method: "POST",
+      });
+    }
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  let taskChecklistItem;
+  if (taskDetails?.taskLabels && taskDetails?.taskLabels?.length) {
+    taskChecklistItem = taskDetails?.taskLabels?.map((item) => {
+      return (
+        <label key={item?.id} className="cursor-pointer label">
+          <span className="label-text">{item?.title}</span>
+          <input
+            onChange={(e) => {
+              setIsCompleted(e.target.checked);
+              setSelectedId(item?.id);
+            }}
+            type="checkbox"
+            checked={
+              isCompleted && item?.id == selectedId
+                ? isCompleted
+                : item?.is_completed
+            }
+            className="checkbox checkbox-secondary"
+          />
+        </label>
+      );
+    });
+  }
 
   return (
     <div>
@@ -35,13 +112,45 @@ const TaskDetails = () => {
                   </button>
                 </div>
                 {/*body*/}
-                <div className="relative p-6 flex-auto">
-                  {taskDetails?.description}
+                <div className="relative p-6 flex-auto  max-h-[280px] overflow-y-auto">
+                  <p className="">{taskDetails?.description}</p>
+
+                  <div className="form-control mt-6">
+                    <h4 className="text-xl font-semibold">Check list item</h4>
+                    {taskChecklistItem}
+                  </div>
+                  <div className="my-2">
+                    <label className="form-control w-full max-w-xs">
+                      <input
+                        onChange={(e) => setItemName(e.target.value)}
+                        value={itemName}
+                        type="text"
+                        placeholder="Item name here"
+                        className="input input-bordered focus:outline-none input-md w-full max-w-xs"
+                      />
+                    </label>
+                    <button
+                      disabled={iLoading}
+                      onClick={handleAddItem}
+                      className="btn btn-sm bg-first mt-1"
+                      type="button"
+                    >
+                      Add Item
+                    </button>
+                  </div>
                 </div>
+
                 {/*footer*/}
                 <div className="flex gap-2 items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                   <button
-                    className="btn btn-sm btn-secondary"
+                    disabled={isLoading}
+                    onClick={() => handleDeleteTask(taskDetails?.id)}
+                    className="btn btn-sm bg-second"
+                  >
+                    Delete
+                  </button>
+                  <button
+                    className="btn btn-sm bg-first"
                     type="button"
                     onClick={() => dispatch(setShowTaskDetailModal(false))}
                   >

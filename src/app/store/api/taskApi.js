@@ -7,7 +7,7 @@ export const taskApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_API_URL}`,
   }),
-  tagTypes: ["task-item", "board"],
+  tagTypes: ["task-item", "board", "task"],
   endpoints: (builder) => ({
     getAllBoard: builder.query({
       query: (boardId) => ({
@@ -40,7 +40,7 @@ export const taskApi = createApi({
           },
         };
       },
-      providesTags: ["task-item"],
+      providesTags: ["task-item", "task"],
     }),
     addColumn: builder.mutation({
       query: (data) => ({
@@ -125,6 +125,18 @@ export const taskApi = createApi({
       },
       invalidatesTags: ["task-item"],
     }),
+    deleteTask: builder.mutation({
+      query: (id) => {
+        return {
+          url: `/task-board/task/${id}/`,
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${Cookies.get("auth_token")}`,
+          },
+        };
+      },
+      invalidatesTags: ["task-item"],
+    }),
     inviteBoardMember: builder.mutation({
       query: ({ action, data }) => {
         return {
@@ -153,6 +165,20 @@ export const taskApi = createApi({
       },
       invalidatesTags: ["task-item"],
     }),
+    taskChecklist: builder.mutation({
+      query: ({ formData, method, id }) => {
+        console.log(formData, method);
+        return {
+          url: `/task-board/task-label/${id ? id : ""}`,
+          method,
+          headers: {
+            Authorization: `Bearer ${Cookies.get("auth_token")}`,
+          },
+          body: formData,
+        };
+      },
+      invalidatesTags: ["task"],
+    }),
   }),
 });
 
@@ -170,4 +196,6 @@ export const {
   useLazyGetTaskDetailsQuery,
   useInviteBoardMemberMutation,
   useMessageFilesUploadMutation,
+  useDeleteTaskMutation,
+  useTaskChecklistMutation,
 } = taskApi;

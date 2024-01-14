@@ -114,7 +114,7 @@ const BoardDetails = () => {
             {currentBoard?.board?.authorize_users
               ?.slice(0, 4)
               ?.map((mem, index) => (
-                <div className="">
+                <div key={index} className="">
                   <Avater
                     css={"bg-second w-10"}
                     name={`${mem?.first_name} ${mem?.last_name}`}
