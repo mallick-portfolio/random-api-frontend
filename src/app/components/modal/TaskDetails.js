@@ -9,12 +9,14 @@ import {
 import Loading from "../shared/Loading";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { checkListProgress } from "@/app/utils/helpers";
 
 const TaskDetails = () => {
   const dispatch = useDispatch();
   const [itemName, setItemName] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
   const [selectedId, setSelectedId] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const { showTaskDetailModal, taskDetails } = useSelector(
     (state) => state.modal
@@ -24,8 +26,6 @@ const TaskDetails = () => {
     showTaskDetailModal,
     setShowTaskDetailModal
   );
-
-  console.log("taskDetails", taskDetails?.taskLabels);
 
   // api call
   const [handleDeleteTask, { isLoading, data }] = useDeleteTaskMutation();
@@ -45,10 +45,18 @@ const TaskDetails = () => {
     if (iData && iData?.id) {
       toast.success("Task checklist added successfully");
       setItemName("");
+      setSelectedId("");
+      setSelectedId(null);
     } else if (iData && !iData?.id) {
       toast.error("Failed to add checklist!!!");
     }
   }, [iData]);
+
+  useEffect(() => {
+    if (selectedId) {
+      handleUpdateChecklist();
+    }
+  }, [selectedId, isCompleted]);
 
   const handleAddItem = async () => {
     if (itemName && itemName !== "") {
@@ -61,6 +69,18 @@ const TaskDetails = () => {
         method: "POST",
       });
     }
+  };
+  const handleUpdateChecklist = async () => {
+    const formData = {
+      task: taskDetails?.id,
+      is_completed: isCompleted,
+      title: selectedItem?.title,
+    };
+    await handleAddChecklist({
+      formData,
+      method: "PUT",
+      id: selectedId,
+    });
   };
 
   if (isLoading) {
@@ -77,6 +97,7 @@ const TaskDetails = () => {
             onChange={(e) => {
               setIsCompleted(e.target.checked);
               setSelectedId(item?.id);
+              setSelectedItem(item);
             }}
             type="checkbox"
             checked={
@@ -117,6 +138,12 @@ const TaskDetails = () => {
 
                   <div className="form-control mt-6">
                     <h4 className="text-xl font-semibold">Check list item</h4>
+                    {Math.ceil(checkListProgress(taskDetails?.taskLabels))}%
+                    <progress
+                      className="progress progress-secondary w-full mb-2"
+                      value={checkListProgress(taskDetails?.taskLabels)}
+                      max="100"
+                    ></progress>
                     {taskChecklistItem}
                   </div>
                   <div className="my-2">

@@ -169,7 +169,7 @@ export const taskApi = createApi({
       query: ({ formData, method, id }) => {
         console.log(formData, method);
         return {
-          url: `/task-board/task-label/${id ? id : ""}`,
+          url: `/task-board/task-label/${id ? `${id}/` : ""}`,
           method,
           headers: {
             Authorization: `Bearer ${Cookies.get("auth_token")}`,

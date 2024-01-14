@@ -30,3 +30,9 @@ export const avaterName = (name = "") => {
   let user = words.map((word) => word[0].toUpperCase()).join("");
   return user;
 };
+
+export const checkListProgress = (items) => {
+  const filter = items?.filter((item) => item?.is_completed);
+  const progress = (Number(filter?.length) * 100) / Number(items?.length);
+  return progress;
+};
