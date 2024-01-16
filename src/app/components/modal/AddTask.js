@@ -32,10 +32,12 @@ const AddTask = () => {
   const initialValues = {
     title: "",
     description: "",
+    status: false,
   };
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Title is required"),
     description: Yup.string().required("Description is required"),
+    status: Yup.boolean().default(false),
   });
   const onSubmit = async (data, { resetForm }) => {
     data.task_item = selectedTaskItem;
@@ -112,6 +114,18 @@ const AddTask = () => {
                         </span>
                       </p>
                     )}
+                  </div>
+                  <div className="form-control">
+                    <label className="label cursor-pointer">
+                      <input
+                        name="status"
+                        onChange={handleChange}
+                        type="checkbox"
+                        checked={values.status}
+                        className="checkbox checkbox-primary"
+                      />
+                      <span className="label-text">Private / Public</span>
+                    </label>
                   </div>
                 </div>
                 {/*footer*/}

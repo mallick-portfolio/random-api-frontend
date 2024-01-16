@@ -36,3 +36,32 @@ export const checkListProgress = (items) => {
   const progress = (Number(filter?.length) * 100) / Number(items?.length);
   return progress;
 };
+
+export const formatDate = (dt_string) => {
+  let dt_object = new Date(dt_string);
+
+  let month_names = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  let short_month_name = month_names[dt_object.getUTCMonth()];
+
+  let formatted_date =
+    dt_object.getUTCFullYear() +
+    "-" +
+    short_month_name +
+    "-" +
+    String(dt_object.getUTCDate()).padStart(2, "0");
+
+  return formatted_date;
+};

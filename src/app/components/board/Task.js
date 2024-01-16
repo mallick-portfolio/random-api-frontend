@@ -1,23 +1,47 @@
 import { useLazyGetTaskDetailsQuery } from "@/app/store/api/taskApi";
 import {
+  setRefetchTask,
   setSelectedTaskId,
   setShowTaskDetailModal,
   setTaskDetails,
 } from "@/app/store/reducer/modalSlice";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
 import Loading from "../shared/Loading";
+import { useSelector } from "react-redux";
 
 export default function Task({ task, index }) {
   const dispatch = useDispatch();
+  const { refetchTask } = useSelector((state) => state.modal);
+  const { user } = useSelector((state) => state.global);
+
+  console.log("user", user);
   // api call
-  const [handleTaskDetails, results] = useLazyGetTaskDetailsQuery();
+  const [handleTaskDetails, results] = useLazyGetTaskDetailsQuery({
+    refetchOnReconnect: true,
+  });
   useEffect(() => {
     if (results && results.data) {
       dispatch(setTaskDetails(results.data?.data));
+      dispatch(setRefetchTask(false));
     }
   }, [results]);
+
+  useEffect(() => {
+    if (refetchTask) {
+      handleTaskDetails(task.id);
+    }
+  }, [refetchTask]);
+
+  const handleTaskOpen = (task) => {
+    console.log(task);
+
+    if (task?.status || task?.authorize_users?.includes(user?.id?.toString())) {
+      dispatch(setShowTaskDetailModal(true));
+      handleTaskDetails(task.id);
+    }
+  };
 
   if (results.status == "pending") {
     return <Loading />;
@@ -26,10 +50,7 @@ export default function Task({ task, index }) {
     <Draggable draggableId={`${task?.id}`} key={task?.id} index={index}>
       {(provided, snapshot) => (
         <div
-          onClick={() => {
-            handleTaskDetails(task.id);
-            dispatch(setShowTaskDetailModal(true));
-          }}
+          onClick={() => handleTaskOpen(task)}
           className="rounded-lg shadow-md p-3 text-black min-h-90 bg-base-100 cursor-pointer flex flex-col gap-y-2 justify-between"
           {...provided.draggableProps}
           {...provided.dragHandleProps}

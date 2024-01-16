@@ -15,6 +15,7 @@ const modalSlice = createSlice({
     selectedTaskItem: null,
     selectedNotificationId: null,
     taskDetails: null,
+    refetchTask: false,
   },
   reducers: {
     setShowChatBox(state, action) {
@@ -53,6 +54,9 @@ const modalSlice = createSlice({
     setSelectedNotificationId(state, action) {
       state.selectedNotificationId = action.payload;
     },
+    setRefetchTask(state, action) {
+      state.refetchTask = action.payload;
+    },
   },
 });
 
@@ -69,5 +73,6 @@ export const {
   setShowInviteBoardModal,
   setShowDeleteNotificationModal,
   setSelectedNotificationId,
+  setRefetchTask,
 } = modalSlice.actions;
 export default modalSlice.reducer;

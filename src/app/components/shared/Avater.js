@@ -11,8 +11,8 @@ const Avater = ({ image = "", name = "Anonimus user", css }) => {
       ) : (
         <div className="avatar  placeholder">
           <div
-            className={`${
-              css ? css : "bg-first w-12"
+            className={`bg-first ${
+              css ? css : "w-12"
             } text-neutral-content rounded-full`}
           >
             <span className="text-xl">{avaterName(name)}</span>

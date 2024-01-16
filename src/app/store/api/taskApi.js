@@ -167,7 +167,6 @@ export const taskApi = createApi({
     }),
     taskChecklist: builder.mutation({
       query: ({ formData, method, id }) => {
-        console.log(formData, method);
         return {
           url: `/task-board/task-label/${id ? `${id}/` : ""}`,
           method,
@@ -175,6 +174,19 @@ export const taskApi = createApi({
             Authorization: `Bearer ${Cookies.get("auth_token")}`,
           },
           body: formData,
+        };
+      },
+      invalidatesTags: ["task"],
+    }),
+    taskComments: builder.mutation({
+      query: ({ data }) => {
+        return {
+          url: `/task-board/task/task-comment/`,
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${Cookies.get("auth_token")}`,
+          },
+          body: data,
         };
       },
       invalidatesTags: ["task"],
@@ -198,4 +210,5 @@ export const {
   useMessageFilesUploadMutation,
   useDeleteTaskMutation,
   useTaskChecklistMutation,
+  useTaskCommentsMutation,
 } = taskApi;

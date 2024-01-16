@@ -21,7 +21,7 @@ const Login = () => {
         autoClose: 2000,
         position: "bottom-right",
       });
-      redirect("/dashboard");
+      redirect("/dashboard/board/");
     }
     if (data && !data?.success) {
       toast.error(data?.message);
