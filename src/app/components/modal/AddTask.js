@@ -115,17 +115,15 @@ const AddTask = () => {
                       </p>
                     )}
                   </div>
-                  <div className="form-control">
-                    <label className="label cursor-pointer">
-                      <input
-                        name="status"
-                        onChange={handleChange}
-                        type="checkbox"
-                        checked={values.status}
-                        className="checkbox checkbox-primary"
-                      />
-                      <span className="label-text">Private / Public</span>
-                    </label>
+                  <div className="form-control flex items-start flex-row gap-2 ">
+                    <input
+                      name="status"
+                      onChange={handleChange}
+                      type="checkbox"
+                      checked={values.status}
+                      className="checkbox checkbox-primary"
+                    />
+                    Private / Public
                   </div>
                 </div>
                 {/*footer*/}

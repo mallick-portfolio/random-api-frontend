@@ -191,6 +191,19 @@ export const taskApi = createApi({
       },
       invalidatesTags: ["task"],
     }),
+    assignTaskMember: builder.mutation({
+      query: ({ data, id }) => {
+        return {
+          url: `/task-board/task/assign-member/${id}/`,
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${Cookies.get("auth_token")}`,
+          },
+          body: data,
+        };
+      },
+      invalidatesTags: ["task"],
+    }),
   }),
 });
 
@@ -211,4 +224,5 @@ export const {
   useDeleteTaskMutation,
   useTaskChecklistMutation,
   useTaskCommentsMutation,
+  useAssignTaskMemberMutation,
 } = taskApi;

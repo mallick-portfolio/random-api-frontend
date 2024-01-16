@@ -10,13 +10,14 @@ import { Draggable } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
 import Loading from "../shared/Loading";
 import { useSelector } from "react-redux";
+import { FaLockOpen } from "react-icons/fa";
+import { FaLock } from "react-icons/fa6";
 
 export default function Task({ task, index }) {
   const dispatch = useDispatch();
   const { refetchTask } = useSelector((state) => state.modal);
   const { user } = useSelector((state) => state.global);
 
-  console.log("user", user);
   // api call
   const [handleTaskDetails, results] = useLazyGetTaskDetailsQuery({
     refetchOnReconnect: true,
@@ -35,9 +36,13 @@ export default function Task({ task, index }) {
   }, [refetchTask]);
 
   const handleTaskOpen = (task) => {
-    console.log(task);
+    const taskMembers = task?.authorize_users?.map((user) => user?.id);
+    console.log(taskMembers, task?.user);
 
-    if (task?.status || task?.authorize_users?.includes(user?.id?.toString())) {
+    if (!task?.status) {
+      dispatch(setShowTaskDetailModal(true));
+      handleTaskDetails(task.id);
+    } else if (taskMembers?.includes(user?.id)) {
       dispatch(setShowTaskDetailModal(true));
       handleTaskDetails(task.id);
     }
@@ -51,7 +56,7 @@ export default function Task({ task, index }) {
       {(provided, snapshot) => (
         <div
           onClick={() => handleTaskOpen(task)}
-          className="rounded-lg shadow-md p-3 text-black min-h-90 bg-base-100 cursor-pointer flex flex-col gap-y-2 justify-between"
+          className="rounded-lg shadow-md p-3 text-black min-h-90 bg-base-100 cursor-pointer flex flex-col gap-y-2 justify-between relative"
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
@@ -59,6 +64,13 @@ export default function Task({ task, index }) {
         >
           <div className="flex gap-y-2 p-1 items-center">
             <h4 className="text-lg">{task?.title}</h4>
+          </div>
+          <div className="absolute top-2 right-2">
+            {task?.status ? (
+              <FaLock className="text-red-500 text-lg" />
+            ) : (
+              <FaLockOpen className="text-red-500 text-lg" />
+            )}
           </div>
 
           {provided.placeholder}

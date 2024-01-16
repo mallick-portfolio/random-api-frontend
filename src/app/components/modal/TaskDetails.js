@@ -1,10 +1,12 @@
 import {
   setRefetchTask,
+  setShowAssignmentTaskMemberModal,
   setShowTaskDetailModal,
 } from "@/app/store/reducer/modalSlice";
 import useComponentVisible from "@/app/utils/useComponentVisible";
 import { useDispatch, useSelector } from "react-redux";
-import { HiMiniXMark } from "react-icons/hi2";
+import { FaPlus } from "react-icons/fa6";
+
 import {
   useDeleteTaskMutation,
   useTaskChecklistMutation,
@@ -18,6 +20,7 @@ import { IoImageOutline } from "react-icons/io5";
 import axios from "axios";
 import Cookies from "js-cookie";
 import TaskComment from "./TaskComment";
+import Avater from "../shared/Avater";
 
 const TaskDetails = () => {
   const dispatch = useDispatch();
@@ -159,7 +162,6 @@ const TaskDetails = () => {
         },
       }
     );
-    console.log(res)
     if (res?.status === 200) {
       dispatch(setRefetchTask(true));
     }
@@ -205,14 +207,43 @@ const TaskDetails = () => {
                   <h3 className="text-3xl font-semibold">
                     {taskDetails?.title}
                   </h3>
-                  <button
-                    className="p-1 rounded-full border border-red-500 ml-8 text-red-500 float-right font-semibold outline-none focus:outline-none"
-                    onClick={() => dispatch(setShowTaskDetailModal(false))}
-                  >
-                    <span className=" text-red-500  text-2xl block outline-none focus:outline-none">
-                      <HiMiniXMark />
-                    </span>
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <div className="avatar-group -space-x-6 rtl:space-x-reverse">
+                      {taskDetails?.authorize_users
+                        ?.slice(0, 4)
+                        ?.map((mem, index) => (
+                          <div key={index} className="">
+                            <Avater
+                              css={"bg-second w-10"}
+                              name={`${mem?.first_name} ${mem?.last_name}`}
+                            />
+                          </div>
+                        ))}
+
+                      {taskDetails?.authorize_users?.length > 4 ? (
+                        <div className="avatar placeholder">
+                          <div className="w-10 bg-first text-neutral-content">
+                            <span>
+                              {taskDetails?.authorize_users?.length - 4}
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <button
+                      onClick={() => {
+                        dispatch(setShowAssignmentTaskMemberModal(true));
+                        dispatch(setShowTaskDetailModal(false));
+                      }}
+                      className="p-1 rounded-full border border-red-500 ml-8 text-red-500 float-right font-semibold outline-none focus:outline-none"
+                    >
+                      <span className=" text-red-500  block outline-none focus:outline-none">
+                        <FaPlus />
+                      </span>
+                    </button>
+                  </div>
                 </div>
                 {/*body*/}
                 <div className="relative p-6 flex-auto  max-h-[280px] overflow-y-auto">
@@ -250,6 +281,7 @@ const TaskDetails = () => {
                       Add Item
                     </button>
                   </div>
+                  <h2 className="mt-5 text-lg font-semibold">Task Comments</h2>
                   <TaskComment />
                   <div className="mt-5">
                     <input

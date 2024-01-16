@@ -29,6 +29,7 @@ import WidgetToggler from "@/app/components/widget/WidgetToggler";
 import InviteIntoBoard from "@/app/components/modal/InviteIntoBoard";
 import { setCurrentBoard, setMessages } from "@/app/store/reducer/dataSlice";
 import Avater from "@/app/components/shared/Avater";
+import AssignTaskMember from "@/app/components/modal/AssignTaskMember";
 
 const BoardDetails = () => {
   const dispatch = useDispatch();
@@ -217,6 +218,7 @@ const BoardDetails = () => {
       {showDeleteTaskItemModal && <DeleteTaskItemModal />}
       {showTaskDetailModal && <TaskDetails />}
       {showInviteBoardModal && <InviteIntoBoard />}
+      <AssignTaskMember />
     </div>
   );
 };

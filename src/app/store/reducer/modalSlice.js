@@ -12,10 +12,11 @@ const modalSlice = createSlice({
     showTaskDetailModal: false,
     showInviteBoardModal: false,
     showDeleteNotificationModal: false,
+    showAssignmentTaskMemberModal: false,
+    refetchTask: false,
     selectedTaskItem: null,
     selectedNotificationId: null,
     taskDetails: null,
-    refetchTask: false,
   },
   reducers: {
     setShowChatBox(state, action) {
@@ -57,6 +58,9 @@ const modalSlice = createSlice({
     setRefetchTask(state, action) {
       state.refetchTask = action.payload;
     },
+    setShowAssignmentTaskMemberModal(state, action) {
+      state.showAssignmentTaskMemberModal = action.payload;
+    },
   },
 });
 
@@ -73,6 +77,7 @@ export const {
   setShowInviteBoardModal,
   setShowDeleteNotificationModal,
   setSelectedNotificationId,
+  setShowAssignmentTaskMemberModal,
   setRefetchTask,
 } = modalSlice.actions;
 export default modalSlice.reducer;
