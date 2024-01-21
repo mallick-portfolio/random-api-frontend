@@ -12,11 +12,13 @@ import Loading from "../shared/Loading";
 import { useSelector } from "react-redux";
 import { FaLockOpen } from "react-icons/fa";
 import { FaLock } from "react-icons/fa6";
+import { FaCheck } from "react-icons/fa6";
 
 export default function Task({ task, index }) {
   const dispatch = useDispatch();
   const { refetchTask } = useSelector((state) => state.modal);
   const { user } = useSelector((state) => state.global);
+  console.log("task", task?.user === user?.id);
 
   // api call
   const [handleTaskDetails, results] = useLazyGetTaskDetailsQuery({
@@ -65,12 +67,13 @@ export default function Task({ task, index }) {
           <div className="flex gap-y-2 p-1 items-center">
             <h4 className="text-lg">{task?.title}</h4>
           </div>
-          <div className="absolute top-2 right-2">
+          <div className="absolute top-2 flex gap-1 right-2">
             {task?.status ? (
               <FaLock className="text-red-500 text-lg" />
             ) : (
               <FaLockOpen className="text-red-500 text-lg" />
             )}
+            {task?.user === user?.id ? <FaCheck /> : ""}
           </div>
 
           {provided.placeholder}

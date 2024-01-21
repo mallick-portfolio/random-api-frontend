@@ -17,7 +17,6 @@ const Register = () => {
   const { user } = useSelector((state) => state.global);
   useEffect(() => {
     if (data && data?.success) {
-      Cookies.set("auth_token", data?.token?.access);
       toast.success(data?.message, {
         autoClose: 2000,
         position: "bottom-right",
@@ -28,6 +27,7 @@ const Register = () => {
       toast.error(data?.message);
     }
   }, [data]);
+
   const initialValues = {
     first_name: "",
     last_name: "",
