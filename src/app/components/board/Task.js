@@ -18,7 +18,6 @@ export default function Task({ task, index }) {
   const dispatch = useDispatch();
   const { refetchTask } = useSelector((state) => state.modal);
   const { user } = useSelector((state) => state.global);
-  console.log("task", task?.user === user?.id);
 
   // api call
   const [handleTaskDetails, results] = useLazyGetTaskDetailsQuery({
@@ -39,7 +38,6 @@ export default function Task({ task, index }) {
 
   const handleTaskOpen = (task) => {
     const taskMembers = task?.authorize_users?.map((user) => user?.id);
-    console.log(taskMembers, task?.user);
 
     if (!task?.status) {
       dispatch(setShowTaskDetailModal(true));

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use } from "react";
 import Task from "./Task";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
@@ -8,8 +8,12 @@ import {
   setShowDeleteTaskItemModal,
 } from "@/app/store/reducer/modalSlice";
 import { MdDelete } from "react-icons/md";
+import { useSelector } from "react-redux";
 
 const Column = ({ tasks, column, index }) => {
+  const { user } = useSelector((state) => state.global);
+  const { currentBoard } = useSelector((state) => state.apiStateData);
+
   const dispatch = useDispatch();
   return (
     <Draggable
@@ -27,18 +31,21 @@ const Column = ({ tasks, column, index }) => {
           >
             <div className="flex justify-between items-center">
               <h2 className="p-2 text-2xl">{column.title}</h2>
-
-              <button
-                onClick={() => {
-                  dispatch(setShowDeleteTaskItemModal(true));
-                  dispatch(setSelectedTaskItem(column.id));
-                }}
-                className="p-1 rounded-full border border-red-500 ml-auto text-red-500 float-right font-semibold outline-none focus:outline-none"
-              >
-                <span className=" text-red-500  text-sm block outline-none focus:outline-none">
-                  <MdDelete />
-                </span>
-              </button>
+              {currentBoard?.board?.user?.id == user?.id ? (
+                <button
+                  onClick={() => {
+                    dispatch(setShowDeleteTaskItemModal(true));
+                    dispatch(setSelectedTaskItem(column.id));
+                  }}
+                  className="p-1 rounded-full border border-red-500 ml-auto text-red-500 float-right font-semibold outline-none focus:outline-none"
+                >
+                  <span className=" text-red-500  text-sm block outline-none focus:outline-none">
+                    <MdDelete />
+                  </span>
+                </button>
+              ) : (
+                ""
+              )}
             </div>
             <Droppable droppableId={`droppableId${column.id}`} type="task">
               {(provided, snapshot) => (
