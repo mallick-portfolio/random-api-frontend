@@ -27,7 +27,7 @@ export const timeDifference = (date) => {
 
 export const avaterName = (name = "") => {
   let words = name.split(" ");
-  let user = words.map((word) => word[0].toUpperCase()).join("");
+  let user = words.map((word) => word[0]?.toUpperCase()).join("");
   return user;
 };
 

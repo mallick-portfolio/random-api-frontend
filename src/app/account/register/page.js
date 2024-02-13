@@ -32,10 +32,8 @@ const Register = () => {
     first_name: "",
     last_name: "",
     email: "",
-    username: "",
     password: "",
     password2: "",
-    phone: "",
     gender: "male",
   };
   const validationSchema = Yup.object().shape({
@@ -48,8 +46,6 @@ const Register = () => {
       .max(50, "Too Long!")
       .required("Lastname is required"),
     email: Yup.string().email().required("Email is required"),
-    username: Yup.string().required("Username is required"),
-    phone: Yup.string().required("Phone number is required"),
     gender: Yup.string().required("Gender is required"),
     password: Yup.string()
       .required("Password is required")
@@ -144,27 +140,7 @@ const Register = () => {
               </p>
             )}
           </div>
-          <div className="mb-2 max-w-[280px]">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-              User Name
-            </label>
-            <input
-              name="username"
-              onChange={handleChange}
-              value={values.username}
-              type="text"
-              className={`${
-                errors.username && touched.username
-                  ? "input-error"
-                  : "input-accent"
-              } input input-bordered w-full max-w-xs`}
-            />
-            {errors.username && touched.username && (
-              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                <span className="font-medium">{errors.username}</span>
-              </p>
-            )}
-          </div>
+
           <div className="mb-2 max-w-[280px]">
             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
               Password
@@ -207,25 +183,7 @@ const Register = () => {
               </p>
             )}
           </div>
-          <div className="mb-2 max-w-[280px]">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-              Phone
-            </label>
-            <input
-              name="phone"
-              onChange={handleChange}
-              value={values.phone}
-              type="text"
-              className={`${
-                errors.phone && touched.phone ? "input-error" : "input-accent"
-              } input input-bordered w-full max-w-xs`}
-            />
-            {errors.phone && touched.phone && (
-              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                <span className="font-medium">{errors.phone}</span>
-              </p>
-            )}
-          </div>
+
           <div className="mb-2 max-w-[280px]">
             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
               Select an option
