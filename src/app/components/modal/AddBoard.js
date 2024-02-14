@@ -35,9 +35,11 @@ const AddBoard = () => {
 
   const initialValues = {
     title: "",
+    status: false,
   };
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Board title is required"),
+    status: Yup.boolean().default(false),
   });
   const onSubmit = async (data, { resetForm }) => {
     await handlAddBoard(data);
@@ -94,6 +96,16 @@ const AddBoard = () => {
                         <span className="font-medium">{errors.title}</span>
                       </p>
                     )}
+                  </div>
+                  <div className="form-control flex items-start flex-row gap-2 ">
+                    <input
+                      name="status"
+                      onChange={handleChange}
+                      type="checkbox"
+                      checked={values.status}
+                      className="checkbox checkbox-primary"
+                    />
+                    {values.status ? "Make public" : "Make private"}
                   </div>
                 </div>
                 {/*footer*/}
