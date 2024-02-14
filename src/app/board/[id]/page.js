@@ -1,3 +1,4 @@
+import PublicTask from "@/app/components/board/PublicTask";
 import Header from "@/app/components/shared/Header";
 import { getBoardById } from "@/app/utils/getPublicBoard";
 import React from "react";
@@ -16,14 +17,7 @@ const BoardDetails = async ({ params }) => {
             <div type="task">
               <div className="flex flex-col flex-grow gap-2 h-auto">
                 {column?.tasks?.map((task, index) => (
-                  <div
-                    key={index}
-                    className="rounded-lg shadow-md p-3 text-black min-h-90 bg-base-100 cursor-pointer flex flex-col gap-y-2 justify-between relative"
-                  >
-                    <div className="flex gap-y-2 p-1 items-center">
-                      <h4 className="text-lg">{task?.title}</h4>
-                    </div>
-                  </div>
+                  <PublicTask index={index} task={task} />
                 ))}
               </div>
             </div>
