@@ -60,6 +60,16 @@ export const accountApi = createApi({
         },
       }),
     }),
+    updatePassword: builder.mutation({
+      query: () => ({
+        url: "/account/logout/",
+        method: "POST",
+        body: {},
+        headers: {
+          Authorization: `Bearer ${Cookies.get("auth_token")}`,
+        },
+      }),
+    }),
   }),
 });
 
@@ -71,4 +81,5 @@ export const {
   useUserLogoutMutation,
   useVerifyEmailOTPMutation,
   useGetUsersQuery,
+  useUpdatePasswordMutation,
 } = accountApi;

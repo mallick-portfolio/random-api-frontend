@@ -40,7 +40,7 @@ const Header = () => {
       </div>
       <div className="navbar-center">
         <Link href={"/"} className="btn btn-ghost text-xl">
-          Kumle
+          IUBoard
         </Link>
       </div>
       <div className="navbar-end">
