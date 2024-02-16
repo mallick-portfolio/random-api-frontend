@@ -61,10 +61,10 @@ export const accountApi = createApi({
       }),
     }),
     updatePassword: builder.mutation({
-      query: () => ({
-        url: "/account/logout/",
-        method: "POST",
-        body: {},
+      query: (data) => ({
+        url: "/account/update-password/",
+        method: "PUT",
+        body: data,
         headers: {
           Authorization: `Bearer ${Cookies.get("auth_token")}`,
         },
