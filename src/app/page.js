@@ -19,8 +19,14 @@ export default async function Home() {
       <Header />
       <Slider />
       <div className="container">
-        <h3 className="text-3xl">Notice board</h3>
-        <div className="grid grid-cols-4 gap-5 mt-8">{boardLog}</div>
+        <div className="py-8 ">
+          <h3 className="text-3xl">
+            <button className="px-8 py-4  bg-accent text-white rounded-tr-lg rounded-bl-xl">
+              Latest Notice
+            </button>
+          </h3>
+          <div className="grid grid-cols-4 gap-5 mt-8">{boardLog}</div>
+        </div>
       </div>
       <Footer />
     </main>
