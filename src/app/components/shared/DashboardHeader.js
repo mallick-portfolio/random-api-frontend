@@ -64,7 +64,7 @@ const DashboardHeader = () => {
         </div>
         <div className="navbar-center">
           <Link href={"/"} className="text-xl">
-            IUBoard
+            Kanban
           </Link>
         </div>
         <div className="navbar-end">

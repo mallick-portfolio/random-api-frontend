@@ -14,7 +14,7 @@ const DashboardSidebar = () => {
       ></label>
       <div className="flex flex-col w-64 h-screen px-4 py-8 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
         <Link href={"/"} className="text-xl m-auto">
-          IUBoard
+          Kanban
         </Link>
 
         <div className="flex flex-col items-center mt-6 -mx-2">

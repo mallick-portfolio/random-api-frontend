@@ -23,13 +23,13 @@ const Header = () => {
             </svg>
           </div> */}
           <Link href={"/"} className="btn btn-ghost text-xl">
-            IUBoard
+            Kanban
           </Link>
         </div>
       </div>
       <div className="navbar-center">
         {/* <Link href={"/"} className="btn btn-ghost text-xl">
-          IUBoard
+          Kanban
         </Link> */}
       </div>
       <div className="navbar-end">

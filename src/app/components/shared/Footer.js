@@ -6,7 +6,14 @@ const Footer = () => {
   return (
     <footer className="footer mt-12 p-10 bg-base-200 text-base-content">
       <div>
-        <Image src={logo} />
+        <h2 className="text-lg font-bold">Kanban</h2>
+        {/* <Image src={logo} /> */}
+        <p>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eaque
+          cupiditate laborum fuga hic. Minima sint, eos necessitatibus, nostrum
+          porro laudantium consequatur, odio alias ratione possimus dignissimos
+          placeat rerum fugit aliquid?
+        </p>
       </div>
       <nav>
         <h6 className="footer-title">Services</h6>
