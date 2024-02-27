@@ -8,9 +8,10 @@ import initialData from "@/lib/data";
 import isAuth from "@/lib/isAuth";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import empty from "../../../../public/image/board.jpg";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import Image from "next/image";
 
 const Board = () => {
   const dispatch = useDispatch();
@@ -39,20 +40,30 @@ const Board = () => {
           Add board
         </button>
       </div>
-      <div className="flex justify-center flex-col items-center">
-        <h1 className=" p-2 border-primary py-5 flex text-2xl justify-start items-center  text-center">
-          List of your board
-        </h1>
-        <ul className="menu bg-base-200 w-56 rounded-box">
-          {data?.data?.map((board) => (
-            <li key={board?.unique_id}>
-              <Link href={`/dashboard/board/${board?.unique_id}`}>
-                {board?.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {data && data?.data?.length ? (
+        <div className="flex justify-center flex-col items-center">
+          <h1 className=" p-2 border-primary py-5 flex text-2xl justify-start items-center  text-center">
+            List of your board
+          </h1>
+          <ul className="menu bg-base-200 w-56 rounded-box">
+            {data?.data?.map((board) => (
+              <li key={board?.unique_id}>
+                <Link href={`/dashboard/board/${board?.unique_id}`}>
+                  {board?.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <div className="w-full">
+          <h2 className="text-2xl font-semibold text-center text-secondary">
+            Ops!!!. You have no board yet. <br />
+            Start from add board button
+          </h2>
+          <Image className=" " src={empty} />
+        </div>
+      )}
       <AddBoard />
     </div>
   );

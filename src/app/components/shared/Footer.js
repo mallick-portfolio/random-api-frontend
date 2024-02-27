@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const Footer = () => {
   return (
-    <footer className="footer mt-12 p-10 bg-base-200 text-base-content">
+    <footer className="footer grid-cols-4 mt-12 p-10 bg-base-200 text-base-content">
       <div>
         <h2 className="text-lg font-bold">Kanban</h2>
         {/* <Image src={logo} /> */}

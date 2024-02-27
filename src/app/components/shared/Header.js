@@ -28,9 +28,9 @@ const Header = () => {
         </div>
       </div>
       <div className="navbar-center">
-        {/* <Link href={"/"} className="btn btn-ghost text-xl">
-          Kanban
-        </Link> */}
+        <Link href={"/public/board"} className="btn btn-ghost text-xl">
+          Public Board
+        </Link>
       </div>
       <div className="navbar-end">
         <button className="btn bg-first btn-sm">

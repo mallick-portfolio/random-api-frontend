@@ -69,7 +69,7 @@ const Register = () => {
     return <Loading />;
   }
   if (user?.id && Cookies.get("auth_token")) {
-    redirect("/dashboard");
+    redirect("/dashboard/board");
   }
   return (
     <div className="flex justify-center items-center h-auto sm:h-screen">
