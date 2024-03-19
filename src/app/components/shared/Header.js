@@ -23,7 +23,7 @@ const Header = () => {
             </svg>
           </div> */}
           <Link href={"/"} className="btn btn-ghost text-xl">
-            Kanban
+            EasyBoard
           </Link>
         </div>
       </div>

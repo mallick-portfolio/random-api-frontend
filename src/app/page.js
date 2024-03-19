@@ -10,7 +10,7 @@ import Link from "next/link";
 export default async function Home() {
   return (
     <main className="">
-      <Header />p
+      <Header />
       <Slider />
       <div className="container my-12">
         <h2 className="text-3xl font-semibold my-8">
