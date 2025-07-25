@@ -55,7 +55,7 @@ const EmailVerify = () => {
         <h1 className="text-2xl my-5 text-primary">Verify Email OTP</h1>
         <div className="">
           <div className="mb-2">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block mb-2 text-sm font-medium text-gray-900">
               OTP code
             </label>
             <input

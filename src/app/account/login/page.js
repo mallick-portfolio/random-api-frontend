@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useUserLoginMutation } from "@/app/store/api/accountApi";
@@ -60,7 +60,7 @@ const Login = () => {
         <h1 className="text-2xl my-5 text-primary">Login form</h1>
         <div className="">
           <div className="mb-2">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block mb-2 text-sm font-medium text-gray-900">
               Email
             </label>
             <input
@@ -80,7 +80,7 @@ const Login = () => {
           </div>
 
           <div className="mb-2">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block mb-2 text-sm font-medium text-gray-900 ">
               Password
             </label>
             <input

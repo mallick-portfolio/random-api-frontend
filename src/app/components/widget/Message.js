@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import Avater from "../shared/Avater";
 import { IoDocumentAttachOutline } from "react-icons/io5";
+import config from "@/lib/config";
 
 const Message = () => {
   const ref = useRef();
@@ -51,7 +52,7 @@ const Message = () => {
                       key={att?.id}
                       className=" rounded-lg w-32 h-auto"
                       alt="message image "
-                      src={`${process.env.NEXT_PUBLIC_MEDIA_URL}` + att.image}
+                      src={`${config.BASE_URL}` + att.image}
                     />
                   );
                 } else if (att?.media_type === "file") {
@@ -62,10 +63,7 @@ const Message = () => {
                     >
                       <a
                         target="_blank"
-                        href={
-                          `${process.env.NEXT_PUBLIC_MEDIA_URL}` +
-                          att.media_file
-                        }
+                        href={`${config.BASE_URL}` + att.media_file}
                       >
                         <IoDocumentAttachOutline className="text-white  text-2xl cursor-pointer" />
                       </a>

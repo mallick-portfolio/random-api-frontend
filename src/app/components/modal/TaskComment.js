@@ -3,6 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import Avater from "../shared/Avater";
 import { IoDocumentAttachOutline } from "react-icons/io5";
+import config from "@/lib/config";
 
 const TaskComment = () => {
   const { taskDetails } = useSelector((state) => state.modal);
@@ -15,7 +16,7 @@ const TaskComment = () => {
             <article class="p-6 text-base bg-white rounded-lg dark:bg-gray-900">
               <footer class="flex justify-between items-center mb-2">
                 <div class="flex items-center">
-                  <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
+                  <p class="inline-flex items-center mr-3 text-sm text-gray-900  font-semibold">
                     <Avater
                       css={"w-10"}
                       name={`${comment?.user?.first_name} ${comment?.user?.last_name}`}
@@ -62,7 +63,7 @@ const TaskComment = () => {
             <article class="p-6 text-base bg-white rounded-lg dark:bg-gray-900">
               <footer class="flex justify-between items-center mb-2">
                 <div class="flex items-center">
-                  <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
+                  <p class="inline-flex items-center mr-3 text-sm text-gray-900  font-semibold">
                     <Avater
                       css={"w-10"}
                       name={`${comment?.user?.first_name} ${comment?.user?.last_name}`}
@@ -109,7 +110,7 @@ const TaskComment = () => {
                         key={att?.id}
                         className=" rounded-lg w-32 h-auto"
                         alt="message image "
-                        src={`${process.env.NEXT_PUBLIC_MEDIA_URL}` + att.image}
+                        src={`${config.BASE_URL}` + att.image}
                       />
                     );
                   } else if (att?.media_type === "file") {
@@ -120,10 +121,7 @@ const TaskComment = () => {
                       >
                         <a
                           target="_blank"
-                          href={
-                            `${process.env.NEXT_PUBLIC_MEDIA_URL}` +
-                            att.media_file
-                          }
+                          href={`${config.BASE_URL}` + att.media_file}
                         >
                           <IoDocumentAttachOutline className="text-white  text-2xl cursor-pointer" />
                         </a>

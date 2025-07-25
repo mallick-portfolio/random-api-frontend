@@ -1,11 +1,12 @@
 // Import the RTK Query methods from the React-specific entry point
+import config from "@/lib/config";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import Cookies from "js-cookie";
 
 export const accountApi = createApi({
   reducerPath: "accountApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_API_URL}`,
+    baseUrl: `${config.BASE_URL}/api/v1`,
   }),
   endpoints: (builder) => ({
     getMe: builder.query({

@@ -20,11 +20,10 @@ const Widget = ({ boardDetails }) => {
           <div className="bg-gradient-to-r from-pink-400 to-pink-600 rounded-t-xl px-2 py-3 flex justify-between items-center">
             <div className="flex gap-2 items-center">
               <div className="chat-image avatar">
-                <div className="w-10 rounded-full ring-1 ring-primary ring-offset-base-100 ring-offset-2">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                  />
+                <div className="avatar online placeholder">
+                  <div className="bg-neutral text-neutral-content w-16 rounded-full">
+                    <span className="text-xl">AI</span>
+                  </div>
                 </div>
               </div>{" "}
               <h3 className="font-semibold">

@@ -23,7 +23,7 @@ const page = async () => {
             <h2 className="text-2xl font-semibold text-center text-secondary">
               Ops!!!. No public board found
             </h2>
-            <Image className=" " src={empty} />
+            {/* <Image className=" " src={empty} /> */}
           </div>
         ) : (
           ""

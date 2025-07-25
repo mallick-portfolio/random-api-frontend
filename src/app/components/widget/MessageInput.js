@@ -9,6 +9,7 @@ import useWebSocket, { ReadyState } from "react-use-websocket";
 import { IoImageOutline } from "react-icons/io5";
 import { useMessageFilesUploadMutation } from "@/app/store/api/taskApi";
 import axios from "axios";
+import config from "@/lib/config";
 
 const MessageInput = () => {
   const { id } = useParams();
@@ -25,9 +26,7 @@ const MessageInput = () => {
     useMessageFilesUploadMutation();
 
   const [socketUrl, setSocketUrl] = useState(
-    `${process.env.NEXT_PUBLIC_WS_URL}/message/${id}/?token=${Cookies.get(
-      "auth_token"
-    )}`
+    `${config.WS_URL}/message/${id}/?token=${Cookies.get("auth_token")}`
   );
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);

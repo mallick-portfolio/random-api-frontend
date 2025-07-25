@@ -1,10 +1,11 @@
+import config from "@/lib/config";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import Cookies from "js-cookie";
 
 export const notificationApi = createApi({
   reducerPath: "notificationApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_API_URL}`,
+    baseUrl: `${config.BASE_URL}/api/v1`,
   }),
   tagTypes: ["notification"],
   endpoints: (builder) => ({

@@ -76,7 +76,7 @@ const AddTask = () => {
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
                   <div className="mb-2">
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    <label className="block mb-2 text-sm font-medium text-gray-900 ">
                       Enter the task title
                     </label>
                     <input
@@ -97,7 +97,7 @@ const AddTask = () => {
                     )}
                   </div>
                   <div className="mt-2">
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    <label className="block mb-2 text-sm font-medium text-gray-900 ">
                       Enter the task description
                     </label>
                     <textarea

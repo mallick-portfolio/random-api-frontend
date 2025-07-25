@@ -13,6 +13,7 @@ import {
   setShowDeleteNotificationModal,
 } from "@/app/store/reducer/modalSlice";
 import { setCurrentNotifications } from "@/app/store/reducer/dataSlice";
+import config from "@/lib/config";
 
 const Notification = () => {
   const dispatch = useDispatch();
@@ -21,9 +22,9 @@ const Notification = () => {
   const { data, isLoading } = useGetIndividualNotificationQuery();
 
   const [socketUrl, setSocketUrl] = useState(
-    `${process.env.NEXT_PUBLIC_WS_URL}/notification/${
-      user?.id
-    }/?token=${Cookies.get("auth_token")}`
+    `${config.WS_URL}/notification/${user?.id}/?token=${Cookies.get(
+      "auth_token"
+    )}`
   );
 
   const { lastMessage, readyState } = useWebSocket(socketUrl);

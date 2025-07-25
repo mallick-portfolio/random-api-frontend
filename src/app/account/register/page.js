@@ -21,7 +21,7 @@ const Register = () => {
         autoClose: 2000,
         position: "bottom-right",
       });
-      router.push(`/account/email-verify?email=${email}`);
+      router.push(`/account/login`);
       setEmail("");
     } else if (data && data?.error && !data?.success) {
       toast.error(data?.message);
@@ -80,7 +80,7 @@ const Register = () => {
         <h1 className="text-2xl my-5 text-primary">Registration form</h1>
         <div className="grid grid-cols-2 gap-x-4 col-md-6">
           <div className="mb-2 max-w-[280px]">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block mb-2 text-sm font-medium text-gray-900 ">
               First name
             </label>
             <input
@@ -101,7 +101,7 @@ const Register = () => {
             )}
           </div>
           <div className="mb-2 max-w-[280px]">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block mb-2 text-sm font-medium text-gray-900 ">
               Last name
             </label>
             <input
@@ -122,7 +122,7 @@ const Register = () => {
             )}
           </div>
           <div className="mb-2 max-w-[280px]">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block mb-2 text-sm font-medium text-gray-900 ">
               Email
             </label>
             <input
@@ -142,7 +142,7 @@ const Register = () => {
           </div>
 
           <div className="mb-2 max-w-[280px]">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block mb-2 text-sm font-medium text-gray-900 ">
               Password
             </label>
             <input
@@ -163,7 +163,7 @@ const Register = () => {
             )}
           </div>
           <div className="mb-2 max-w-[280px]">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block mb-2 text-sm font-medium text-gray-900 ">
               Confirm Password
             </label>
             <input
@@ -185,7 +185,7 @@ const Register = () => {
           </div>
 
           <div className="mb-2 max-w-[280px]">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block mb-2 text-sm font-medium text-gray-900 ">
               Select an option
             </label>
             <select

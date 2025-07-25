@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/app/store/reducer/globalSlice";
 import { useSelector } from "react-redux";
+import config from "./config";
 
 const isAuth = (Component) => {
   return function AuthComponent(props) {
@@ -23,7 +24,7 @@ const isAuth = (Component) => {
       const handleRequest = async () => {
         try {
           const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}/account/me/`,
+            `${config.BASE_URL}/api/v1/account/me/`,
             {
               headers: {
                 Authorization: `Bearer ${Cookies.get("auth_token")}`,

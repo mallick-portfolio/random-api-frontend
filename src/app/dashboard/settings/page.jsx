@@ -92,7 +92,7 @@ const Settings = () => {
         <form onSubmit={handleSubmit} className="">
           <div className="">
             <div className="mb-2">
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label className="block mb-2 text-sm font-medium text-gray-900 ">
                 Old Password
               </label>
               <input
@@ -113,7 +113,7 @@ const Settings = () => {
               )}
             </div>
             <div className="mb-2">
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label className="block mb-2 text-sm font-medium text-gray-900 ">
                 New Password
               </label>
               <input
@@ -134,7 +134,7 @@ const Settings = () => {
               )}
             </div>
             <div className="mb-2">
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label className="block mb-2 text-sm font-medium text-gray-900 ">
                 Confirm Password
               </label>
               <input

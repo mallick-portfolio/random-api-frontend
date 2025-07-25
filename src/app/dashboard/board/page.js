@@ -61,7 +61,7 @@ const Board = () => {
             Ops!!!. You have no board yet. <br />
             Start from add board button
           </h2>
-          <Image className=" " src={empty} />
+          {/* <Image className=" " src={empty} /> */}
         </div>
       )}
       <AddBoard />
